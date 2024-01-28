@@ -1,17 +1,23 @@
-import core from "@actions/core";
+import {
+  getInput,
+  setFailed,
+  debug,
+  setSecret,
+  setOutput,
+} from "@actions/core";
 import { publishToHashnode } from "./lib/publication";
 
 async function run() {
   try {
-    const title = core.getInput("title");
-    const file = core.getInput("file");
-    const hashnode_key = core.getInput("hashnode_key");
+    const title = getInput("title");
+    const file = getInput("file");
+    const hashnode_key = getInput("hashnode_key");
 
-    core.setSecret(hashnode_key);
+    setSecret(hashnode_key);
 
     console.log("Welcome to this action");
     console.log(process.env.HASHNODE_KEY);
-    core.debug(
+    debug(
       JSON.stringify({
         title,
         file,
@@ -31,19 +37,19 @@ async function run() {
     //   console.log("r:", r);
     //   return r;
     // });
-    const output = [{}]
+    const output = [{}];
 
     const json = JSON.stringify(output, null, 2);
-    core.debug("Output result_json:\n" + json);
-    core.setOutput("result_json", json);
+    debug("Output result_json:\n" + json);
+    setOutput("result_json", json);
 
     const summary = `output length: ${output.length}`;
-    core.setOutput("result_summary", summary);
+    setOutput("result_summary", summary);
 
     // const payload = JSON.stringify(github.context.payload, undefined, 2);
     // Get the JSON webhook payload for the event that triggered the workflow
   } catch (error: any) {
-    core.setFailed(error);
+    setFailed(error);
   }
 }
 
