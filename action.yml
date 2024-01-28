@@ -11,7 +11,7 @@ inputs:
   title: # id of input
     description: "Title of the new blog"
     required: true
-  files:
+  file:
     description: "Path to the files uploaded"
     default: "Posts/**/*.md"
   hashnode_key:

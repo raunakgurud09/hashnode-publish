@@ -1,11 +1,22 @@
 name: "Hello"
 
-on: 
-  workflow_dispatch:
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   hello:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - uses: actions/checkout@v2
-      - uses: ./
+      - name: Publish articles on hashnode
+        id: publish_hashnode
+        uses: ./
+        with:
+          title: "New blog title"
+          file: "vue/**/*.md"
+          hashnode_key: ${{secrets.HASHNODE_KEY}}
+      - name: Get get output
+        run: echo "The time was ${{steps.publish_hashnode.outputs.result_json}} message ${{steps.publish_hashnode.outputs.result_summary}}"
