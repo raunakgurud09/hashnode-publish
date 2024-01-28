@@ -1,0 +1,24 @@
+name: "Hashnode publish"
+description: "Publish post to hashnode via github action"
+author: "Raunak Gurud"
+branding:
+  icon: "upload"
+  color: "blue"
+runs:
+  using: "node20"
+  main: "dist/index.js"
+inputs:
+  title: # id of input
+    description: "Title of the new blog"
+    required: true
+  files:
+    description: "Path to the files uploaded"
+    default: "Posts/**/*.md"
+  hashnode_key:
+    description: "secret key by hashnode"
+    required: true
+outputs:
+  result_json:
+    description: "Publish result as a JSON string"
+  result_summary:
+    description: "Publish result summary formatted as text"
