@@ -1,5 +1,5 @@
 import core from "@actions/core";
-import { publishToHashnode } from "./lib/publication.js";
+import { publishToHashnode } from "./lib/publication";
 
 async function run() {
   try {

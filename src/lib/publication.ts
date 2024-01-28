@@ -1,4 +1,4 @@
-import { queryMe } from "./query.js";
+import { queryMe } from "./query";
 
 type publishProps = {
   title: string;
