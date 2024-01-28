@@ -26590,6 +26590,7 @@ var __webpack_exports__ = {};
 var exports = __webpack_exports__;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.run = void 0;
 const core_1 = __nccwpck_require__(2186);
 async function run() {
     try {
@@ -26628,6 +26629,7 @@ async function run() {
         (0, core_1.setFailed)(error);
     }
 }
+exports.run = run;
 run();
 
 })();
