@@ -43,7 +43,7 @@ async function run() {
     // const payload = JSON.stringify(github.context.payload, undefined, 2);
     // Get the JSON webhook payload for the event that triggered the workflow
   } catch (error: any) {
-    core.setFailed(error.message);
+    core.setFailed(error);
   }
 }
 
