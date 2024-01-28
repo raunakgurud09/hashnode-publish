@@ -39,6 +39,7 @@ export async function run() {
     });
 
     const json = JSON.stringify(output, null, 2);
+    
     debug("Output result_json:\n" + json);
     setOutput("result_json", json);
 
