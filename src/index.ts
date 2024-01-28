@@ -7,7 +7,7 @@ import {
 } from "@actions/core";
 import { publishToHashnode } from "./lib/publication";
 
-async function run() {
+export async function run() {
   try {
     const title = getInput("title");
     const file = getInput("file");
