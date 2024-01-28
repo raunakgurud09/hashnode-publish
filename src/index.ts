@@ -1,5 +1,4 @@
 import core from "@actions/core";
-import github from "@actions/github";
 import { publishToHashnode } from "./lib/publication.js";
 
 async function run() {
@@ -22,16 +21,17 @@ async function run() {
 
     // some function to analyze the post
     // give output of the post
-    const results = await publishToHashnode({
-      title,
-      hashnode_key,
-      file,
-    });
+    // const results = await publishToHashnode({
+    //   title,
+    //   hashnode_key,
+    //   file,
+    // });
 
-    const output = results.map((r: any) => {
-      console.log("r:", r);
-      return r;
-    });
+    // const output = results.map((r: any) => {
+    //   console.log("r:", r);
+    //   return r;
+    // });
+    const output = [{}]
 
     const json = JSON.stringify(output, null, 2);
     core.debug("Output result_json:\n" + json);
