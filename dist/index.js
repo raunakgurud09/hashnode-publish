@@ -42446,7 +42446,6 @@ async function run() {
             file,
         });
         const output = results.map((r) => {
-            // console.log("r:", r);
             return r;
         });
         const json = JSON.stringify(output, null, 2);
