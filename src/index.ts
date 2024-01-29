@@ -16,7 +16,6 @@ export async function run() {
     setSecret(hashnode_key);
 
     console.log("Welcome to this action");
-    console.log(process.env.HASHNODE_KEY);
     debug(
       JSON.stringify({
         title,
@@ -34,7 +33,7 @@ export async function run() {
     });
 
     const output = results.map((r: any) => {
-      console.log("r:", r);
+      // console.log("r:", r);
       return r;
     });
 

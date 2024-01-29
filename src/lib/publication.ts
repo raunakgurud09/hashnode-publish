@@ -1,4 +1,6 @@
 import { queryMe } from "./query";
+import fs from "fs-extra";
+import matter from "gray-matter";
 
 type publishProps = {
   title: string;
@@ -17,6 +19,12 @@ export const publishToHashnode = async ({
   if (!response) {
     return [];
   }
+
+  const content = await fs.readFile(file, "utf8");
+  const article = matter(content, { language: "yaml" });
+
+  console.log("article",article);
+
   console.log(response);
   return [response];
 };

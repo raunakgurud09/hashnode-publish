@@ -16,7 +16,7 @@ jobs:
         uses: ./
         with:
           title: "New blog title"
-          file: "vue/**/*.md"
+          file: "post/blog/example.md"
           hashnode_key: ${{secrets.HASHNODE_KEY}}
       - name: Get get output
         run: echo "The time was ${{steps.publish_hashnode.outputs.result_json}} message ${{steps.publish_hashnode.outputs.result_summary}}"
