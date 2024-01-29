@@ -33,7 +33,6 @@ export async function run() {
     });
 
     const output = results.map((r: any) => {
-      // console.log("r:", r);
       return r;
     });
 
