@@ -54,6 +54,7 @@ export const searchPublication = ({ host }: { host: string }) => {
 
 export type Ttag = {
   slug: string;
+  name: string;
 };
 
 export type PublishPostProps = {

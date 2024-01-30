@@ -36,7 +36,7 @@ export const publishBlog = async (
     title: article.data.title,
     markdown: article.content,
     publicationId: publication.id,
-    tags: [{ slug: "webdev" }],
+    tags: [{ slug: "webdev", name: "webdev" }],
   };
 
   const headers = {
