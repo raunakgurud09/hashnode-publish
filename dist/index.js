@@ -47,8 +47,8 @@ const publishBlog = async (hashnode_key, article, host) => {
             coverImageURL: article.data.cover_image,
         },
         settings: {
-            enableTableOfContent: true,
-            isNewsletterActivated: false,
+            enableTableOfContent: article.data.settings.enableTableOfContent,
+            isNewsletterActivated: article.data.settings.isNewsletterActivated,
         },
     };
     if (!toPublish) {

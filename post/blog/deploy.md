@@ -12,12 +12,8 @@ tags:
 originalArticleURL: "https://tx.shadcn.com/blog/deploying-next-apps"
 
 
-# slug: "custom-slug"
 subtitle: "deploy your Next.js apps on Vercel"
-# // no-feat of data just reference
-date: "2023-01-02" 
 
-disableComments: true
 isNewsletterActivated: true
 enableTableOfContent: true
 

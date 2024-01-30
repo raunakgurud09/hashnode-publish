@@ -35,8 +35,8 @@ export const publishBlog = async (
     },
 
     settings: {
-      enableTableOfContent: true,
-      isNewsletterActivated: false,
+      enableTableOfContent: article.data.settings.enableTableOfContent,
+      isNewsletterActivated: article.data.settings.isNewsletterActivated,
     },
   };
 
