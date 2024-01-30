@@ -27,11 +27,8 @@ export const parseFile = async (file: string) => {
   const disableComments = article.data.disableComments ? true : false;
   article.data.disableComments = disableComments;
 
-  const isNewsletterActivated = article.data.isNewsletterActivated
-    ? true
-    : false;
-
-  const enableTableOfContent = article.data.enableTableOfContent ?? false;
+  const isNewsletterActivated = true;
+  const enableTableOfContent = true;
 
   // const slug = article.data.slug ?? false;
 

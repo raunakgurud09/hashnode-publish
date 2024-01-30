@@ -279,7 +279,6 @@ const helper_1 = __nccwpck_require__(698);
 const repos_1 = __nccwpck_require__(7747);
 const image_1 = __nccwpck_require__(5817);
 const parseFile = async (file) => {
-    var _a;
     // path of file you want to parse
     const content = await fs_extra_1.default.readFile(file, "utf8");
     const parsedArticle = (0, gray_matter_1.default)(content, { language: "yaml" });
@@ -295,10 +294,8 @@ const parseFile = async (file) => {
     // const isSchedules = !!article.data.publishedAt ?? false;
     const disableComments = article.data.disableComments ? true : false;
     article.data.disableComments = disableComments;
-    const isNewsletterActivated = article.data.isNewsletterActivated
-        ? true
-        : false;
-    const enableTableOfContent = (_a = article.data.enableTableOfContent) !== null && _a !== void 0 ? _a : false;
+    const isNewsletterActivated = true;
+    const enableTableOfContent = true;
     // const slug = article.data.slug ?? false;
     // const metaTags = {
     //   title: article.data.title,
