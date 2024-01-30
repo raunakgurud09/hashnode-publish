@@ -1,6 +1,6 @@
 import axios from "axios";
 import { HASHNODE_ENDPOINT } from "../constants";
-import { MyPublications, searchPublication } from "../lib/api";
+import { MyPublications, searchPublication } from "../libs/api";
 
 // {
 //   <!-- "tags": [PublishPostTagInput], -->

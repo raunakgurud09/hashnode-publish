@@ -4,7 +4,7 @@ import {
   PublishPost,
   PublishPostProps,
   searchPublication,
-} from "../lib/api";
+} from "../libs/api";
 import { HASHNODE_ENDPOINT, hashnode_key } from "../constants";
 
 export const publishBlog = async (
@@ -36,7 +36,7 @@ export const publishBlog = async (
     title: article.data.title,
     markdown: article.content,
     publicationId: publication.id,
-    tags: [{ name: "webdev" }],
+    tags: [{ slug: "webdev" }],
   };
 
   const headers = {

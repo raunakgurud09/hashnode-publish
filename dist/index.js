@@ -25,7 +25,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getPublicationId = exports.publishBlog = void 0;
 const axios_1 = __importDefault(__nccwpck_require__(8757));
-const api_1 = __nccwpck_require__(8409);
+const api_1 = __nccwpck_require__(2895);
 const constants_1 = __nccwpck_require__(5105);
 const publishBlog = async (hashnode_key, article, host) => {
     var _a;
@@ -48,7 +48,7 @@ const publishBlog = async (hashnode_key, article, host) => {
         title: article.data.title,
         markdown: article.content,
         publicationId: publication.id,
-        tags: [{ name: "webdev" }],
+        tags: [{ slug: "webdev" }],
     };
     const headers = {
         "Content-Type": "application/json",
@@ -147,7 +147,7 @@ exports.getPublicationId = getPublicationId;
 
 /***/ }),
 
-/***/ 8409:
+/***/ 2895:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -240,7 +240,7 @@ exports.PublishPost = PublishPost;
 
 /***/ }),
 
-/***/ 3706:
+/***/ 5243:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -59277,7 +59277,7 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const core_1 = __nccwpck_require__(2186);
-const publication_1 = __nccwpck_require__(3706);
+const publication_1 = __nccwpck_require__(5243);
 async function run() {
     try {
         const host = (0, core_1.getInput)("host");

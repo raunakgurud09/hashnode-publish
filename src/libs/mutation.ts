@@ -8,7 +8,6 @@ const headers = {
   Authorization: `${token}`,
 };
 
-
 // @typescript-eslint/no-unused-vars
 const AllBuildingQuery = `{
   publishPost(input: $input) {

@@ -78,7 +78,7 @@ export const findPublication = async (hashnodeKey: string, host: string) => {
     const data = await axios({
       url: HASHNODE_API,
       method: "post",
-      data: searchPublication({host}),
+      data: searchPublication({ host }),
       headers: headers,
     });
 

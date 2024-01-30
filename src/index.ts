@@ -5,7 +5,7 @@ import {
   setSecret,
   setOutput,
 } from "@actions/core";
-import { publishToHashnode } from "./lib/publication";
+import { publishToHashnode } from "./libs/publication";
 
 export async function run() {
   try {
