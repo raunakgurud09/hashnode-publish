@@ -1,6 +1,6 @@
 ---
 title: Deploying Next.js Apps
-publish: false
+publish: true
 description: How to deploy your Next.js apps on Vercel.
 cover_image: ./assets/blog-post-3.jpg
 
