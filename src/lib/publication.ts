@@ -3,6 +3,7 @@ import { queryMe } from "./query";
 import fs from "fs-extra";
 import matter from "gray-matter";
 import { updateRelativeImageUrls } from "../utils/image";
+import { publishBlog } from "../controller";
 
 type publishProps = {
   title: string;
@@ -33,9 +34,11 @@ export const publishToHashnode = async ({
   const content = await fs.readFile(file, "utf8");
   const article = matter(content, { language: "yaml" });
 
-  const updatedArticle = updateRelativeImageUrls(article, repository,file);
-  console.log("updated", updatedArticle);
+  const updatedArticle = updateRelativeImageUrls(article, repository, file);
 
-  console.log(response);
+  const publish = await publishBlog(hashnode_key, updatedArticle);
+  console.log("publish", publish);
+
+
   return [response];
 };

@@ -1,6 +1,69 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 9111:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.publishBlog = void 0;
+const axios_1 = __importDefault(__nccwpck_require__(8757));
+const endPoint = "https://gql.hashnode.com/";
+const publishBlog = async (hashnode_key, article) => {
+    // fetch from owner user 1st or option to publish on host address
+    const publicationId = "65b607b390d2cbd29afb4a47";
+    const graphqlQuery = {
+        operationName: "PublishPost",
+        query: `mutation PublishPost($input: PublishPostInput!){
+      publishPost(input: $input) {
+        post {
+          id
+          slug
+          title
+          subtitle
+          author {
+            username
+          }
+        }
+      }
+    }`,
+        variables: {
+            input: {
+                title: `${article.data.title}`,
+                contentMarkdown: `${article.content}`,
+                publicationId,
+                tags: ["webdev"],
+            },
+        },
+    };
+    const headers = {
+        "Content-Type": "application/json",
+        Authorization: `${hashnode_key}`,
+    };
+    try {
+        const { data } = await (0, axios_1.default)({
+            url: endPoint,
+            method: "post",
+            data: graphqlQuery,
+            headers: headers,
+        });
+        console.log(data);
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+        return {};
+    }
+};
+exports.publishBlog = publishBlog;
+
+
+/***/ }),
+
 /***/ 3706:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -16,6 +79,7 @@ const query_1 = __nccwpck_require__(2519);
 const fs_extra_1 = __importDefault(__nccwpck_require__(5630));
 const gray_matter_1 = __importDefault(__nccwpck_require__(5382));
 const image_1 = __nccwpck_require__(5817);
+const controller_1 = __nccwpck_require__(9111);
 const publishToHashnode = async ({ title, hashnode_key, file, }) => {
     const response = await (0, query_1.queryMe)(hashnode_key);
     if (!response) {
@@ -33,8 +97,8 @@ const publishToHashnode = async ({ title, hashnode_key, file, }) => {
     const content = await fs_extra_1.default.readFile(file, "utf8");
     const article = (0, gray_matter_1.default)(content, { language: "yaml" });
     const updatedArticle = (0, image_1.updateRelativeImageUrls)(article, repository, file);
-    console.log("updated", updatedArticle);
-    console.log(response);
+    const publish = await (0, controller_1.publishBlog)(hashnode_key, updatedArticle);
+    console.log("publish", publish);
     return [response];
 };
 exports.publishToHashnode = publishToHashnode;
@@ -120,7 +184,6 @@ function updateRelativeImageUrls(article, repository, file) {
     const basePath = path_1.default.dirname(file);
     let match;
     while ((match = relativeImageRegex.exec(article.content))) {
-        console.log("match", match);
         const [link, alt = "", imagePath, title = ""] = match;
         if (imagePath) {
             const fullPath = getFullImagePath(basePath, imagePath);

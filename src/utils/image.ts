@@ -25,7 +25,6 @@ export function updateRelativeImageUrls(
 
   let match;
   while ((match = relativeImageRegex.exec(article.content))) {
-    console.log("match", match);
     const [link, alt = "", imagePath, title = ""] = match;
     if (imagePath) {
       const fullPath = getFullImagePath(basePath, imagePath);
