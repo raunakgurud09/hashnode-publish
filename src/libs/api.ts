@@ -94,11 +94,7 @@ export const PublishPost = ({
         title,
         contentMarkdown: markdown,
         publicationId,
-        tags: [
-          {
-            name: "webdev",
-          },
-        ],
+        tags: tags,
       },
     },
   };

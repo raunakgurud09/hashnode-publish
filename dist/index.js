@@ -48,7 +48,12 @@ const publishBlog = async (hashnode_key, article, host) => {
         title: article.data.title,
         markdown: article.content,
         publicationId: publication.id,
-        tags: [{ slug: "webdev", name: "webdev" }],
+        tags: [
+            {
+                slug: "webdev",
+                name: "webdev",
+            },
+        ],
     };
     const headers = {
         "Content-Type": "application/json",
@@ -226,11 +231,7 @@ const PublishPost = ({ title, markdown, publicationId, tags, publish_on, }) => {
                 title,
                 contentMarkdown: markdown,
                 publicationId,
-                tags: [
-                    {
-                        name: "webdev",
-                    },
-                ],
+                tags: tags,
             },
         },
     };
