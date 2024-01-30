@@ -36,7 +36,12 @@ const publishBlog = async (hashnode_key, article) => {
                 title: `${article.data.title}`,
                 contentMarkdown: `${article.content}`,
                 publicationId,
-                tags: ["webdev", "devops"],
+                tags: [
+                    {
+                        slug: "webdev",
+                        name: "webdev",
+                    },
+                ],
             },
         },
     };
