@@ -69,12 +69,10 @@ export type PublishPostProps = {
 
   subtitle?: string;
   // disableComments?: boolean;
-  // isNewsletterActivated?: boolean;
-
-  // settings?: {
-  //   isNewsletterActivated?: boolean;
-  //   enableTableOfContent?: boolean;
-  // };
+  settings?: {
+    isNewsletterActivated?: boolean;
+    enableTableOfContent?: boolean;
+  };
 };
 
 const foo = {

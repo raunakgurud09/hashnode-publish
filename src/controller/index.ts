@@ -34,12 +34,10 @@ export const publishBlog = async (
       coverImageURL: article.data.cover_image,
     },
 
-    // disableComments: false,
-    // settings: {
-    //   // slugOverridden: article.data.settings.slugOverridden,
-    //   enableTableOfContent: true,
-    //   isNewsletterActivated: false,
-    // },
+    settings: {
+      enableTableOfContent: true,
+      isNewsletterActivated: false,
+    },
   };
 
   if (!toPublish) {
