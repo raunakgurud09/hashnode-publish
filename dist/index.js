@@ -7,9 +7,8 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.hashnode_key = exports.HASHNODE_ENDPOINT = void 0;
+exports.HASHNODE_ENDPOINT = void 0;
 exports.HASHNODE_ENDPOINT = "https://gql.hashnode.com/";
-exports.hashnode_key = "bcd8acf8-7450-4415-91db-6047d2e99da9";
 
 
 /***/ }),
@@ -78,7 +77,7 @@ exports.publishBlog = publishBlog;
 const getPublicationId = async (host) => {
     const headers = {
         "Content-Type": "application/json",
-        Authorization: `${constants_1.hashnode_key}`,
+        Authorization: `${process.env.HASHNODE_KEY}`,
     };
     if (host) {
         console.log(`host provided: ${host}`);

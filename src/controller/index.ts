@@ -6,7 +6,7 @@ import {
   PublishPostProps,
   searchPublication,
 } from "../libs/api";
-import { HASHNODE_ENDPOINT, hashnode_key } from "../constants";
+import { HASHNODE_ENDPOINT } from "../constants";
 
 export const publishBlog = async (
   hashnode_key: string,
@@ -74,7 +74,7 @@ export const getPublicationId = async (
 }> => {
   const headers = {
     "Content-Type": "application/json",
-    Authorization: `${hashnode_key}`,
+    Authorization: `${process.env.HASHNODE_KEY}`,
   };
 
   if (host) {
