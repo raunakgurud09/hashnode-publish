@@ -1,6 +1,8 @@
+import { Toolkit } from "actions-toolkit";
 import { queryMe } from "./query";
 import fs from "fs-extra";
 import matter from "gray-matter";
+import { updateRelativeImageUrls } from "../utils/image";
 
 type publishProps = {
   title: string;
@@ -13,17 +15,27 @@ export const publishToHashnode = async ({
   hashnode_key,
   file,
 }: publishProps) => {
-  console.log("op: ", { title, hashnode_key, file });
-
   const response = await queryMe(hashnode_key);
   if (!response) {
     return [];
   }
 
+  const tools = new Toolkit();
+  const { owner, repo } = tools.context.repo;
+  const branch = "main";
+  const repository = {
+    user: owner,
+    name: repo,
+    branch,
+  };
+  // console.log(tools.context.repo);
+
   const content = await fs.readFile(file, "utf8");
   const article = matter(content, { language: "yaml" });
 
-  console.log("article",article);
+  const updatedArticle = updateRelativeImageUrls(article, repository, branch);
+
+  console.log("updated", updatedArticle);
 
   console.log(response);
   return [response];

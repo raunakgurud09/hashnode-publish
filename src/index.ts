@@ -33,10 +33,6 @@ export async function run() {
       file,
     });
 
-    const tools = new Toolkit();
-
-    console.log(tools.context.repo);
-
     const output = results.map((r: any) => {
       return r;
     });
