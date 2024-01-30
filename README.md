@@ -1,3 +1,5 @@
+[![Buildt test](https://github.com/raunakgurud09/hashnode-publish/actions/workflows/test.yml/badge.svg)](https://github.com/raunakgurud09/hashnode-publish/actions/workflows/test.yml)
+
 # hashnode-publish
 
 This action checks-out your repository under `$GITHUB_WORKSPACE`, so your workflow can publish your md file to hashnode on push.
