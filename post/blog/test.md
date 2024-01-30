@@ -8,12 +8,12 @@ subtitle: "abc123"
 tags: 'productivity, beginners, test'
 
 
-publishedAt: "2024-01-30T11:00",
-slug: "custom-slug",
-originalArticleURL: "abc123",
+publishedAt: "2024-01-30T11:00"
+slug: "custom-slug"
+originalArticleURL: "abc123"
 disableComments: false
 
-seriesId: "ObjectId",
+seriesId: "ObjectId"
 
 
 ---
