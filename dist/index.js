@@ -30,7 +30,6 @@ const constants_1 = __nccwpck_require__(5105);
 const publishBlog = async (hashnode_key, article, host) => {
     var _a;
     const toPublish = (_a = article.data.publish) !== null && _a !== void 0 ? _a : false;
-    console.log(article);
     if (!toPublish) {
         return {
             message: `Title:${article.data.title} is been worked on ⚒️`,
@@ -43,17 +42,11 @@ const publishBlog = async (hashnode_key, article, host) => {
     }
     // log to the publication title it's been posted on
     console.log(`blog is been posted on ${publication.title}...`);
-    // parse tags from article
     const payload = {
         title: article.data.title,
         markdown: article.content,
         publicationId: publication.id,
-        tags: [
-            {
-                slug: "webdev",
-                name: "webdev",
-            },
-        ],
+        tags: article.tags,
     };
     const headers = {
         "Content-Type": "application/json",
@@ -210,7 +203,6 @@ const searchPublication = ({ host }) => {
 };
 exports.searchPublication = searchPublication;
 const PublishPost = ({ title, markdown, publicationId, tags, publish_on, }) => {
-    console.log(tags, publicationId);
     return {
         operationName: "PublishPost",
         query: `mutation PublishPost($input: PublishPostInput!){
@@ -282,13 +274,38 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.parseFile = void 0;
 const fs_extra_1 = __importDefault(__nccwpck_require__(5630));
 const gray_matter_1 = __importDefault(__nccwpck_require__(5382));
+const helper_1 = __nccwpck_require__(698);
 const parseFile = async (file) => {
     // path of file you want to parse
     const content = await fs_extra_1.default.readFile(file, "utf8");
     const article = (0, gray_matter_1.default)(content, { language: "yaml" });
-    return article;
+    const newTags = (0, helper_1.createTags)(article.data.tags);
+    // time process 
+    return { ...article, tags: newTags };
 };
 exports.parseFile = parseFile;
+
+
+/***/ }),
+
+/***/ 698:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createTags = void 0;
+const createTags = (tags) => {
+    const newArr = tags.map((a) => {
+        a.trim();
+        return {
+            slug: a,
+            name: a,
+        };
+    });
+    return newArr;
+};
+exports.createTags = createTags;
 
 
 /***/ }),

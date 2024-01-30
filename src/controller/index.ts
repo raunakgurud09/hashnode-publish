@@ -6,6 +6,7 @@ import {
   searchPublication,
 } from "../libs/api";
 import { HASHNODE_ENDPOINT, hashnode_key } from "../constants";
+import { createTags } from "../utils/helper";
 
 export const publishBlog = async (
   hashnode_key: string,
@@ -13,8 +14,6 @@ export const publishBlog = async (
   host: string
 ) => {
   const toPublish = article.data.publish ?? false;
-
-  console.log(article);
 
   if (!toPublish) {
     return {
@@ -30,18 +29,11 @@ export const publishBlog = async (
   // log to the publication title it's been posted on
   console.log(`blog is been posted on ${publication.title}...`);
 
-  // parse tags from article
-
-  const payload: PublishPostProps = {
+  const payload: PublishPostProps & { tags: string } = {
     title: article.data.title,
     markdown: article.content,
     publicationId: publication.id,
-    tags: [
-      {
-        slug: "webdev",
-        name: "webdev",
-      },
-    ],
+    tags: article.tags,
   };
 
   const headers = {

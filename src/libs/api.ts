@@ -72,8 +72,6 @@ export const PublishPost = ({
   tags,
   publish_on,
 }: PublishPostProps) => {
-  console.log(tags, publicationId);
-
   return {
     operationName: "PublishPost",
     query: `mutation PublishPost($input: PublishPostInput!){
