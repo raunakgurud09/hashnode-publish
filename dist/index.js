@@ -30,11 +30,6 @@ const constants_1 = __nccwpck_require__(5105);
 const publishBlog = async (hashnode_key, article, host) => {
     var _a;
     const toPublish = (_a = article.data.publish) !== null && _a !== void 0 ? _a : false;
-    if (!toPublish) {
-        return {
-            message: `Title:${article.data.title} is been worked on ⚒️`,
-        };
-    }
     // get publicationId
     const { publication, error } = await (0, exports.getPublicationId)(host);
     if (error || !publication) {
@@ -43,11 +38,15 @@ const publishBlog = async (hashnode_key, article, host) => {
     // log to the publication title it's been posted on
     console.log(`blog is been posted on ${publication.title}...`);
     const payload = {
-        title: article.data.title,
         markdown: article.content,
-        publicationId: publication.id,
-        tags: article.data.tags,
+        ...article.data,
     };
+    console.log(payload);
+    if (!toPublish) {
+        return {
+            message: `Title:${article.data.title} is been worked on ⚒️`,
+        };
+    }
     const headers = {
         "Content-Type": "application/json",
         Authorization: `${hashnode_key}`,
@@ -202,7 +201,7 @@ const searchPublication = ({ host }) => {
     };
 };
 exports.searchPublication = searchPublication;
-const PublishPost = ({ title, markdown, publicationId, tags, publish_on, }) => {
+const PublishPost = ({ title, markdown, publicationId, tags, }) => {
     return {
         operationName: "PublishPost",
         query: `mutation PublishPost($input: PublishPostInput!){
@@ -246,7 +245,8 @@ const publishToHashnode = async ({ host, hashnode_key, file, }) => {
     // check validity of hashnode_key
     // parse the file into content
     const article = await (0, file_1.parseFile)(file);
-    console.log("article", article);
+    // console.log("article", article.data);
+    // validation
     const publish = await (0, controller_1.publishBlog)(hashnode_key, article, host);
     // console.log("publish data", publish);
     // return result of publish blog
@@ -371,7 +371,8 @@ function updateRelativeImageUrls(article, repository, file) {
     // TODO: test this working
     if (data.cover_image && !isUrl(data.cover_image)) {
         const fullPath = getFullImagePath(basePath, data.cover_image);
-        data.cover_image = `${getResourceUrl(repository, repository.branch)}${fullPath}`;
+        // coverImageOptions more details
+        data.coverImageOptions.coverImageURL = `${getResourceUrl(repository, repository.branch)}${fullPath}`;
     }
     return { ...article, content, data };
 }

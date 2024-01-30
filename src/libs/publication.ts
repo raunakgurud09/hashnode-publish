@@ -17,7 +17,8 @@ export const publishToHashnode = async ({
   // parse the file into content
   const article = await parseFile(file);
 
-  console.log("article", article);
+  // console.log("article", article.data);
+  // validation
 
   const publish = await publishBlog(hashnode_key, article, host);
   // console.log("publish data", publish);

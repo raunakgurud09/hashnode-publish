@@ -62,7 +62,20 @@ export type PublishPostProps = {
   markdown: string;
   publicationId: string;
   tags: [Ttag];
-  publish_on?: string;
+
+  coverImageOptions?: {
+    coverImageURL?: string;
+  };
+
+  subtitle?: string;
+  slug?: string;
+  disableComments?: boolean;
+  isNewsletterActivated?: boolean;
+
+  settings?: {
+    isNewsletterActivated?: boolean;
+    enableTableOfContent?: boolean;
+  };
 };
 
 export const PublishPost = ({
@@ -70,7 +83,6 @@ export const PublishPost = ({
   markdown,
   publicationId,
   tags,
-  publish_on,
 }: PublishPostProps) => {
   return {
     operationName: "PublishPost",

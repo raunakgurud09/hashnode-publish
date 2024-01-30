@@ -6,7 +6,6 @@ import {
   searchPublication,
 } from "../libs/api";
 import { HASHNODE_ENDPOINT, hashnode_key } from "../constants";
-import { createTags } from "../utils/helper";
 
 export const publishBlog = async (
   hashnode_key: string,
@@ -14,12 +13,6 @@ export const publishBlog = async (
   host: string
 ) => {
   const toPublish = article.data.publish ?? false;
-
-  if (!toPublish) {
-    return {
-      message: `Title:${article.data.title} is been worked on ⚒️`,
-    };
-  }
 
   // get publicationId
   const { publication, error } = await getPublicationId(host);
@@ -30,11 +23,17 @@ export const publishBlog = async (
   console.log(`blog is been posted on ${publication.title}...`);
 
   const payload: PublishPostProps & { tags: string } = {
-    title: article.data.title,
     markdown: article.content,
-    publicationId: publication.id,
-    tags: article.data.tags,
+    ...article.data,
   };
+
+  console.log(payload);
+
+  if (!toPublish) {
+    return {
+      message: `Title:${article.data.title} is been worked on ⚒️`,
+    };
+  }
 
   const headers = {
     "Content-Type": "application/json",

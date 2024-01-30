@@ -12,12 +12,13 @@ tags:
 originalArticleURL: "https://tx.shadcn.com/blog/deploying-next-apps"
 
 
+subtitle: "deploy your Next.js apps on Vercel"
 # date: "2023-01-02" // no-feat
 
-# subtitle: "abc123"
-# slug: "custom-slug"
-# disableComments: true
-# isNewsletterActivated: true
+slug: "custom-slug"
+disableComments: true
+isNewsletterActivated: true
+enableTableOfContent: true
 
 ---
 
