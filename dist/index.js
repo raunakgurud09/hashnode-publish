@@ -46,7 +46,7 @@ const publishBlog = async (hashnode_key, article, host) => {
         title: article.data.title,
         markdown: article.content,
         publicationId: publication.id,
-        tags: article.tags,
+        tags: article.data.tags,
     };
     const headers = {
         "Content-Type": "application/json",
@@ -240,20 +240,15 @@ exports.PublishPost = PublishPost;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.publishToHashnode = void 0;
-const image_1 = __nccwpck_require__(5817);
 const controller_1 = __nccwpck_require__(9111);
 const file_1 = __nccwpck_require__(4670);
-const respo_1 = __nccwpck_require__(5983);
 const publishToHashnode = async ({ host, hashnode_key, file, }) => {
     // check validity of hashnode_key
     // parse the file into content
     const article = await (0, file_1.parseFile)(file);
-    //  get information related to repository
-    const repository = (0, respo_1.getRepoDetails)();
-    // update the images relative path in file to github hosted image path
-    const updatedArticle = (0, image_1.updateRelativeImageUrls)(article, repository, file);
-    const publish = await (0, controller_1.publishBlog)(hashnode_key, updatedArticle, host);
-    console.log("publish data", publish);
+    console.log("article", article);
+    const publish = await (0, controller_1.publishBlog)(hashnode_key, article, host);
+    // console.log("publish data", publish);
     // return result of publish blog
     return publish;
 };
@@ -275,13 +270,44 @@ exports.parseFile = void 0;
 const fs_extra_1 = __importDefault(__nccwpck_require__(5630));
 const gray_matter_1 = __importDefault(__nccwpck_require__(5382));
 const helper_1 = __nccwpck_require__(698);
+const repos_1 = __nccwpck_require__(7747);
+const image_1 = __nccwpck_require__(5817);
 const parseFile = async (file) => {
+    var _a, _b;
     // path of file you want to parse
     const content = await fs_extra_1.default.readFile(file, "utf8");
-    const article = (0, gray_matter_1.default)(content, { language: "yaml" });
+    const parsedArticle = (0, gray_matter_1.default)(content, { language: "yaml" });
+    // TODO: required check
+    // title, description, publish, tags, contentMarkdown,
+    // (2) publicationId
+    //  get information related to repository
+    const repository = (0, repos_1.getRepoDetails)();
+    // update the images relative path in file to github hosted image path
+    const article = (0, image_1.updateRelativeImageUrls)(parsedArticle, repository, file);
     const newTags = (0, helper_1.createTags)(article.data.tags);
-    // time process
-    return { ...article, tags: newTags };
+    article.data.tags = newTags;
+    // const isSchedules = !!article.data.publishedAt ?? false;
+    const disableComments = article.data.disableComments ? true : false;
+    article.data.disableComments = disableComments;
+    const isNewsletterActivated = article.data.isNewsletterActivated
+        ? true
+        : false;
+    const enableTableOfContent = (_a = article.data.enableTableOfContent) !== null && _a !== void 0 ? _a : false;
+    const slug = (_b = article.data.slug) !== null && _b !== void 0 ? _b : false;
+    const metaTags = {
+        title: article.data.title,
+        description: article.data.description,
+        image: article.data.cover_image,
+    };
+    article.data.metaTags = metaTags;
+    const settings = {
+        // scheduled: isSchedules,
+        enableTableOfContent,
+        slugOverridden: !!slug,
+        isNewsletterActivated,
+    };
+    article.data.settings = settings;
+    return { ...article };
 };
 exports.parseFile = parseFile;
 
@@ -369,7 +395,7 @@ exports.getImageUrls = getImageUrls;
 
 /***/ }),
 
-/***/ 5983:
+/***/ 7747:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -382,6 +408,8 @@ const getRepoDetails = () => {
     const { owner, repo } = tools.context.repo;
     // TODO: find the working branch
     const branch = "main";
+    // const owner = "raunakgurud09"
+    // const repo = "abc"
     return {
         // git repository username
         user: owner,

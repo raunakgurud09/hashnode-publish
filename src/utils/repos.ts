@@ -6,6 +6,8 @@ export const getRepoDetails = () => {
 
   // TODO: find the working branch
   const branch = "main";
+  // const owner = "raunakgurud09"
+  // const repo = "abc"
 
   return {
     // git repository username

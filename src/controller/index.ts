@@ -33,7 +33,7 @@ export const publishBlog = async (
     title: article.data.title,
     markdown: article.content,
     publicationId: publication.id,
-    tags: article.tags,
+    tags: article.data.tags,
   };
 
   const headers = {

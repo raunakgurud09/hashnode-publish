@@ -1,5 +1,3 @@
-import { parseFile } from "./file";
-
 export const createTags = (
   tags: string[]
 ): { slug: string; name: string }[] => {
