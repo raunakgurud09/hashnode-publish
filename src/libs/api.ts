@@ -96,7 +96,7 @@ export const PublishPost = (payload: PublishPostProps) => {
   }`,
     variables: {
       input: {
-        payload,
+        ...payload,
       },
     },
   };

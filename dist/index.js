@@ -53,8 +53,6 @@ const publishBlog = async (hashnode_key, article, host) => {
             isNewsletterActivated: false,
         },
     };
-    // delete payload["markdown"];
-    console.log("payload", payload);
     if (!toPublish) {
         return {
             message: `Title:${article.data.title} is been worked on ⚒️`,
@@ -232,7 +230,7 @@ const PublishPost = (payload) => {
   }`,
         variables: {
             input: {
-                payload,
+                ...payload,
             },
         },
     };

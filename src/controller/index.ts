@@ -43,9 +43,6 @@ export const publishBlog = async (
     },
   };
 
-  // delete payload["markdown"];
-  console.log("payload", payload);
-
   if (!toPublish) {
     return {
       message: `Title:${article.data.title} is been worked on ⚒️`,
