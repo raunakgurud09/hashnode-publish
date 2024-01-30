@@ -14,7 +14,7 @@ originalArticleURL: "https://tx.shadcn.com/blog/deploying-next-apps"
 
 subtitle: "deploy your Next.js apps on Vercel"
 
-isNewsletterActivated: true
+isNewsletterActivated: false
 enableTableOfContent: true
 
 ---
