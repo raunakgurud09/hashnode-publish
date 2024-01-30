@@ -1,4 +1,5 @@
 import axios from "axios";
+import lodash from "lodash";
 import {
   MyPublications,
   PublishPost,
@@ -22,10 +23,12 @@ export const publishBlog = async (
   // log to the publication title it's been posted on
   console.log(`blog is been posted on ${publication.title}...`);
 
-  const payload: PublishPostProps & { tags: string } = {
+  const payload: PublishPostProps = {
     markdown: article.content,
     ...article.data,
   };
+
+  lodash.omit(payload, ["markdown", "cover_image"]);
 
   console.log(payload);
 

@@ -61,7 +61,7 @@ export type PublishPostProps = {
   title: string;
   markdown: string;
   publicationId: string;
-  tags: [Ttag];
+  tags: Ttag[];
 
   coverImageOptions?: {
     coverImageURL?: string;
