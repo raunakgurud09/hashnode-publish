@@ -44,7 +44,7 @@ const publishBlog = async (hashnode_key, article, host) => {
         tags: article.data.tags,
         subtitle: article.data.subtitle,
         coverImageOptions: {
-            coverImageURL: "https://raw.githubusercontent.com/raunakgurud09/hashnode-publish/main/post/blog/assets/blog-post-3.jpg",
+            coverImageURL: article.data.cover_image,
         },
         // disableComments: false,
         // settings: {
