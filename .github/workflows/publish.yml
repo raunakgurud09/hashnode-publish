@@ -16,7 +16,7 @@ jobs:
         uses: ./
         with:
           host: "levelupdevs.hashnode.dev"
-          file: "post/blog/test.md"
+          file: "post/blog/deploy.md"
           hashnode_key: ${{secrets.HASHNODE_KEY}}
       - name: Get get output
         run: echo "me- ${{steps.publish_hashnode.outputs.result_json}} length ${{steps.publish_hashnode.outputs.result_summary}}"
