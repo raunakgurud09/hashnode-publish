@@ -15,7 +15,6 @@ const actions_toolkit_1 = __nccwpck_require__(7045);
 const query_1 = __nccwpck_require__(2519);
 const fs_extra_1 = __importDefault(__nccwpck_require__(5630));
 const gray_matter_1 = __importDefault(__nccwpck_require__(5382));
-const image_1 = __nccwpck_require__(5817);
 const publishToHashnode = async ({ title, hashnode_key, file, }) => {
     const response = await (0, query_1.queryMe)(hashnode_key);
     if (!response) {
@@ -32,8 +31,8 @@ const publishToHashnode = async ({ title, hashnode_key, file, }) => {
     // console.log(tools.context.repo);
     const content = await fs_extra_1.default.readFile(file, "utf8");
     const article = (0, gray_matter_1.default)(content, { language: "yaml" });
-    const updatedArticle = (0, image_1.updateRelativeImageUrls)(article, repository, branch);
-    console.log("updated", updatedArticle);
+    // const updatedArticle = updateRelativeImageUrls(article, repository, branch);
+    // console.log("updated", updatedArticle);
     console.log(response);
     return [response];
 };
@@ -91,65 +90,6 @@ const queryMe = async (hashnodeKey) => {
     }
 };
 exports.queryMe = queryMe;
-
-
-/***/ }),
-
-/***/ 5817:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getImageUrls = exports.updateRelativeImageUrls = exports.convertPathToPosix = void 0;
-const node_path_1 = __importDefault(__nccwpck_require__(9411));
-const hostUrl = "https://raw.githubusercontent.com";
-const relativeImageRegex = /!\[(.*)]\((?!.*?:\/\/)([^ ]*?) *?( (?:'.*'|".*"))? *?\)/g;
-const imageRegex = /!\[(.*)]\(([^ ]*?) *?( (?:'.*'|".*"))? *?\)/g;
-const convertPathToPosix = (path) => path.replace(/\\/g, "/");
-exports.convertPathToPosix = convertPathToPosix;
-const isUrl = (string) => /^https?:\/\/\w/.test(string);
-const getResourceUrl = (repository, branch) => `${hostUrl}/${repository.user}/${repository.name}/${branch}/`;
-const getFullImagePath = (basePath, imagePath) => (0, exports.convertPathToPosix)(node_path_1.default.normalize(node_path_1.default.join(basePath, imagePath)));
-function updateRelativeImageUrls(article, repository, branch) {
-    const data = { ...article.data };
-    let { content } = article;
-    const basePath = node_path_1.default.dirname(article.file);
-    let match;
-    while ((match = relativeImageRegex.exec(article.content))) {
-        console.log("match", match);
-        const [link, alt = "", imagePath, title = ""] = match;
-        if (imagePath) {
-            const fullPath = getFullImagePath(basePath, imagePath);
-            const newLink = `![${alt}](${getResourceUrl(repository, branch)}${fullPath}${title})`;
-            content = content.replace(link, newLink);
-        }
-    }
-    if (data.cover_image && !isUrl(data.cover_image)) {
-        const fullPath = getFullImagePath(basePath, data.cover_image);
-        data.cover_image = `${getResourceUrl(repository, branch)}${fullPath}`;
-    }
-    return { ...article, content, data };
-}
-exports.updateRelativeImageUrls = updateRelativeImageUrls;
-function getImageUrls(article) {
-    const urls = [];
-    let match;
-    while ((match = imageRegex.exec(article.content))) {
-        const url = match[2];
-        if (url) {
-            urls.push(url);
-        }
-    }
-    if (article.data.cover_image) {
-        urls.push(article.data.cover_image);
-    }
-    return urls;
-}
-exports.getImageUrls = getImageUrls;
 
 
 /***/ }),
@@ -52833,14 +52773,6 @@ module.exports = require("net");
 
 "use strict";
 module.exports = require("node:events");
-
-/***/ }),
-
-/***/ 9411:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("node:path");
 
 /***/ }),
 

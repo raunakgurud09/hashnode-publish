@@ -33,9 +33,8 @@ export const publishToHashnode = async ({
   const content = await fs.readFile(file, "utf8");
   const article = matter(content, { language: "yaml" });
 
-  const updatedArticle = updateRelativeImageUrls(article, repository, branch);
-
-  console.log("updated", updatedArticle);
+  // const updatedArticle = updateRelativeImageUrls(article, repository, branch);
+  // console.log("updated", updatedArticle);
 
   console.log(response);
   return [response];
