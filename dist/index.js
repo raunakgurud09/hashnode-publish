@@ -42,17 +42,16 @@ const publishBlog = async (hashnode_key, article, host) => {
         title: article.data.title,
         publicationId: publication.id,
         tags: article.data.tags,
+        subtitle: article.data.subtitle,
         coverImageOptions: {
-            coverImageURL: article.data.cover_image,
+            coverImageURL: "https://raw.githubusercontent.com/raunakgurud09/hashnode-publish/main/post/blog/assets/blog-post-3.jpg",
         },
-        disableComments: article.data.disableComments,
+        disableComments: false,
         settings: {
             // slugOverridden: article.data.settings.slugOverridden,
-            enableTableOfContent: article.data.settings.enableTableOfContent,
-            isNewsletterActivated: article.data.settings.isNewsletterActivated,
+            enableTableOfContent: true,
+            isNewsletterActivated: false,
         },
-        slug: article.data.slug,
-        subtitle: article.data.subtitle,
     };
     // delete payload["markdown"];
     console.log("payload", payload);
@@ -287,7 +286,7 @@ const helper_1 = __nccwpck_require__(698);
 const repos_1 = __nccwpck_require__(7747);
 const image_1 = __nccwpck_require__(5817);
 const parseFile = async (file) => {
-    var _a, _b;
+    var _a;
     // path of file you want to parse
     const content = await fs_extra_1.default.readFile(file, "utf8");
     const parsedArticle = (0, gray_matter_1.default)(content, { language: "yaml" });
@@ -307,17 +306,17 @@ const parseFile = async (file) => {
         ? true
         : false;
     const enableTableOfContent = (_a = article.data.enableTableOfContent) !== null && _a !== void 0 ? _a : false;
-    const slug = (_b = article.data.slug) !== null && _b !== void 0 ? _b : false;
-    const metaTags = {
-        title: article.data.title,
-        description: article.data.description,
-        image: article.data.cover_image,
-    };
-    article.data.metaTags = metaTags;
+    // const slug = article.data.slug ?? false;
+    // const metaTags = {
+    //   title: article.data.title,
+    //   description: article.data.description,
+    //   image: article.data.cover_image,
+    // };
+    // article.data.metaTags = metaTags;
     const settings = {
         // scheduled: isSchedules,
         enableTableOfContent,
-        slugOverridden: !!slug,
+        // slugOverridden: !!slug,
         isNewsletterActivated,
     };
     article.data.settings = settings;

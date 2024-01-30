@@ -33,19 +33,19 @@ export const parseFile = async (file: string) => {
 
   const enableTableOfContent = article.data.enableTableOfContent ?? false;
 
-  const slug = article.data.slug ?? false;
+  // const slug = article.data.slug ?? false;
 
-  const metaTags = {
-    title: article.data.title,
-    description: article.data.description,
-    image: article.data.cover_image,
-  };
-  article.data.metaTags = metaTags;
+  // const metaTags = {
+  //   title: article.data.title,
+  //   description: article.data.description,
+  //   image: article.data.cover_image,
+  // };
+  // article.data.metaTags = metaTags;
 
   const settings = {
     // scheduled: isSchedules,
     enableTableOfContent,
-    slugOverridden: !!slug,
+    // slugOverridden: !!slug,
     isNewsletterActivated,
   };
   article.data.settings = settings;

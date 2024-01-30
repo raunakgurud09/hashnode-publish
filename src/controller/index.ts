@@ -28,17 +28,19 @@ export const publishBlog = async (
     title: article.data.title,
     publicationId: publication.id,
     tags: article.data.tags,
+    subtitle: article.data.subtitle,
+
     coverImageOptions: {
-      coverImageURL: article.data.cover_image,
+      coverImageURL:
+        "https://raw.githubusercontent.com/raunakgurud09/hashnode-publish/main/post/blog/assets/blog-post-3.jpg",
     },
-    disableComments: article.data.disableComments,
+
+    disableComments: false,
     settings: {
       // slugOverridden: article.data.settings.slugOverridden,
-      enableTableOfContent: article.data.settings.enableTableOfContent,
-      isNewsletterActivated: article.data.settings.isNewsletterActivated,
+      enableTableOfContent: true,
+      isNewsletterActivated: false,
     },
-    slug: article.data.slug,
-    subtitle: article.data.subtitle,
   };
 
   // delete payload["markdown"];
