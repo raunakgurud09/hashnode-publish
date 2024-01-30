@@ -78,12 +78,7 @@ export type PublishPostProps = {
   };
 };
 
-export const PublishPost = ({
-  title,
-  markdown,
-  publicationId,
-  tags,
-}: PublishPostProps) => {
+export const PublishPost = (payload: PublishPostProps) => {
   return {
     operationName: "PublishPost",
     query: `mutation PublishPost($input: PublishPostInput!){
@@ -101,10 +96,7 @@ export const PublishPost = ({
   }`,
     variables: {
       input: {
-        title,
-        contentMarkdown: markdown,
-        publicationId,
-        tags: tags,
+        payload,
       },
     },
   };

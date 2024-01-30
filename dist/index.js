@@ -214,7 +214,7 @@ const searchPublication = ({ host }) => {
     };
 };
 exports.searchPublication = searchPublication;
-const PublishPost = ({ title, markdown, publicationId, tags, }) => {
+const PublishPost = (payload) => {
     return {
         operationName: "PublishPost",
         query: `mutation PublishPost($input: PublishPostInput!){
@@ -232,10 +232,7 @@ const PublishPost = ({ title, markdown, publicationId, tags, }) => {
   }`,
         variables: {
             input: {
-                title,
-                contentMarkdown: markdown,
-                publicationId,
-                tags: tags,
+                payload,
             },
         },
     };
