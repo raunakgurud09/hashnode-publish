@@ -17,13 +17,14 @@ const getFullImagePath = (basePath: string, imagePath: string) =>
 export function updateRelativeImageUrls(
   article: any,
   repository: any,
-  branch: string
+  file: string
 ) {
   const data = { ...article.data };
   const { content } = article;
-  const basePath = path.dirname(article.file);
-  console.log("basePath", basePath);
+  const basePath = path.dirname(file);
 
+  console.log("basePath", basePath);
+  console.log(repository.branch);
   // let match;
   // while ((match = relativeImageRegex.exec(article.content))) {
   //   console.log("match", match);

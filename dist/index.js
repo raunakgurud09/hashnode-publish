@@ -32,7 +32,7 @@ const publishToHashnode = async ({ title, hashnode_key, file, }) => {
     // console.log(tools.context.repo);
     const content = await fs_extra_1.default.readFile(file, "utf8");
     const article = (0, gray_matter_1.default)(content, { language: "yaml" });
-    const updatedArticle = (0, image_1.updateRelativeImageUrls)(article, repository, branch);
+    const updatedArticle = (0, image_1.updateRelativeImageUrls)(article, repository, file);
     console.log("updated", updatedArticle);
     console.log(response);
     return [response];
@@ -114,11 +114,12 @@ exports.convertPathToPosix = convertPathToPosix;
 const isUrl = (string) => /^https?:\/\/\w/.test(string);
 const getResourceUrl = (repository, branch) => `${hostUrl}/${repository.user}/${repository.name}/${branch}/`;
 const getFullImagePath = (basePath, imagePath) => (0, exports.convertPathToPosix)(path_1.default.normalize(path_1.default.join(basePath, imagePath)));
-function updateRelativeImageUrls(article, repository, branch) {
+function updateRelativeImageUrls(article, repository, file) {
     const data = { ...article.data };
     const { content } = article;
-    const basePath = path_1.default.dirname(article.file);
+    const basePath = path_1.default.dirname(file);
     console.log("basePath", basePath);
+    console.log(repository.branch);
     // let match;
     // while ((match = relativeImageRegex.exec(article.content))) {
     //   console.log("match", match);
