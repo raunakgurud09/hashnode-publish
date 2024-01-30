@@ -20,22 +20,24 @@ export function updateRelativeImageUrls(
   branch: string
 ) {
   const data = { ...article.data };
-  let { content } = article;
-  const basePath = path.dirname(article.file);
-  let match;
-  while ((match = relativeImageRegex.exec(article.content))) {
-    console.log("match", match);
-    const [link, alt = "", imagePath, title = ""] = match;
-    if (imagePath) {
-      const fullPath = getFullImagePath(basePath, imagePath);
-      const newLink = `![${alt}](${getResourceUrl(repository, branch)}${fullPath}${title})`;
-      content = content.replace(link, newLink);
-    }
-  }
-  if (data.cover_image && !isUrl(data.cover_image)) {
-    const fullPath = getFullImagePath(basePath, data.cover_image);
-    data.cover_image = `${getResourceUrl(repository, branch)}${fullPath}`;
-  }
+  const { content } = article;
+  console.log("content", content);
+
+  // const basePath = path.dirname(article.file);
+  // let match;
+  // while ((match = relativeImageRegex.exec(article.content))) {
+  //   console.log("match", match);
+  //   const [link, alt = "", imagePath, title = ""] = match;
+  //   if (imagePath) {
+  //     const fullPath = getFullImagePath(basePath, imagePath);
+  //     const newLink = `![${alt}](${getResourceUrl(repository, branch)}${fullPath}${title})`;
+  //     content = content.replace(link, newLink);
+  //   }
+  // }
+  // if (data.cover_image && !isUrl(data.cover_image)) {
+  //   const fullPath = getFullImagePath(basePath, data.cover_image);
+  //   data.cover_image = `${getResourceUrl(repository, branch)}${fullPath}`;
+  // }
   return { ...article, content, data };
 }
 
