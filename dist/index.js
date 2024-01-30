@@ -116,20 +116,18 @@ const getResourceUrl = (repository, branch) => `${hostUrl}/${repository.user}/${
 const getFullImagePath = (basePath, imagePath) => (0, exports.convertPathToPosix)(path_1.default.normalize(path_1.default.join(basePath, imagePath)));
 function updateRelativeImageUrls(article, repository, file) {
     const data = { ...article.data };
-    const { content } = article;
+    let { content } = article;
     const basePath = path_1.default.dirname(file);
-    console.log("basePath", basePath);
-    console.log(repository.branch);
-    // let match;
-    // while ((match = relativeImageRegex.exec(article.content))) {
-    //   console.log("match", match);
-    //   const [link, alt = "", imagePath, title = ""] = match;
-    //   if (imagePath) {
-    //     const fullPath = getFullImagePath(basePath, imagePath);
-    //     const newLink = `![${alt}](${getResourceUrl(repository, branch)}${fullPath}${title})`;
-    //     content = content.replace(link, newLink);
-    //   }
-    // }
+    let match;
+    while ((match = relativeImageRegex.exec(article.content))) {
+        console.log("match", match);
+        const [link, alt = "", imagePath, title = ""] = match;
+        if (imagePath) {
+            const fullPath = getFullImagePath(basePath, imagePath);
+            const newLink = `![${alt}](${getResourceUrl(repository, repository.branch)}${fullPath}${title})`;
+            content = content.replace(link, newLink);
+        }
+    }
     // if (data.cover_image && !isUrl(data.cover_image)) {
     //   const fullPath = getFullImagePath(basePath, data.cover_image);
     //   data.cover_image = `${getResourceUrl(repository, branch)}${fullPath}`;
