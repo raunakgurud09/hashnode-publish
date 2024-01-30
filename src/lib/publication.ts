@@ -17,7 +17,7 @@ export const publishToHashnode = async ({
   // check validity of hashnode_key
 
   // parse the file into content
-  const article = parseFile(file);
+  const article = await parseFile(file);
   console.log(article);
 
   //  get information related to repository

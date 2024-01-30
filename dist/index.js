@@ -254,7 +254,7 @@ const respo_1 = __nccwpck_require__(5983);
 const publishToHashnode = async ({ host, hashnode_key, file, }) => {
     // check validity of hashnode_key
     // parse the file into content
-    const article = (0, file_1.parseFile)(file);
+    const article = await (0, file_1.parseFile)(file);
     console.log(article);
     //  get information related to repository
     const repository = (0, respo_1.getRepoDetails)();
