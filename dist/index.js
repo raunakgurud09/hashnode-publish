@@ -255,10 +255,8 @@ const publishToHashnode = async ({ host, hashnode_key, file, }) => {
     // check validity of hashnode_key
     // parse the file into content
     const article = await (0, file_1.parseFile)(file);
-    console.log(article);
     //  get information related to repository
     const repository = (0, respo_1.getRepoDetails)();
-    console.log("repository", repository);
     // update the images relative path in file to github hosted image path
     const updatedArticle = (0, image_1.updateRelativeImageUrls)(article, repository, file);
     console.log("updatedArticle", updatedArticle);
@@ -328,10 +326,10 @@ function updateRelativeImageUrls(article, repository, file) {
         }
     }
     // TODO: test this working
-    // if (data.cover_image && !isUrl(data.cover_image)) {
-    //   const fullPath = getFullImagePath(basePath, data.cover_image);
-    //   data.cover_image = `${getResourceUrl(repository, repository.branch)}${fullPath}`;
-    // }
+    if (data.cover_image && !isUrl(data.cover_image)) {
+        const fullPath = getFullImagePath(basePath, data.cover_image);
+        data.cover_image = `${getResourceUrl(repository, repository.branch)}${fullPath}`;
+    }
     return { ...article, content, data };
 }
 exports.updateRelativeImageUrls = updateRelativeImageUrls;

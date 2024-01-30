@@ -33,10 +33,10 @@ export function updateRelativeImageUrls(
     }
   }
   // TODO: test this working
-  // if (data.cover_image && !isUrl(data.cover_image)) {
-  //   const fullPath = getFullImagePath(basePath, data.cover_image);
-  //   data.cover_image = `${getResourceUrl(repository, repository.branch)}${fullPath}`;
-  // }
+  if (data.cover_image && !isUrl(data.cover_image)) {
+    const fullPath = getFullImagePath(basePath, data.cover_image);
+    data.cover_image = `${getResourceUrl(repository, repository.branch)}${fullPath}`;
+  }
   return { ...article, content, data };
 }
 
