@@ -36,7 +36,7 @@ const publishBlog = async (hashnode_key, article) => {
                 title: `${article.data.title}`,
                 contentMarkdown: `${article.content}`,
                 publicationId,
-                tags: ["webdev"],
+                tags: ["webdev", "devops"],
             },
         },
     };
@@ -51,7 +51,6 @@ const publishBlog = async (hashnode_key, article) => {
             data: graphqlQuery,
             headers: headers,
         });
-        console.log(data);
         return data;
     }
     catch (error) {
