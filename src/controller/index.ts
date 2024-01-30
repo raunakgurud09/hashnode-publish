@@ -25,12 +25,24 @@ export const publishBlog = async (
 
   const payload: PublishPostProps = {
     markdown: article.content,
-    ...article.data,
+    title: article.data.title,
+    publicationId: publication.id,
+    tags: article.data.tags,
+    coverImageOptions: {
+      coverImageURL: article.data.cover_image,
+    },
+    disableComments: article.data.disableComments,
+    settings: {
+      // slugOverridden: article.data.settings.slugOverridden,
+      enableTableOfContent: article.data.settings.enableTableOfContent,
+      isNewsletterActivated: article.data.settings.isNewsletterActivated,
+    },
+    slug: article.data.slug,
+    subtitle: article.data.subtitle,
   };
 
-  lodash.omit(payload, ["markdown", "cover_image"]);
-
-  console.log(payload);
+  // delete payload["markdown"];
+  console.log("payload", payload);
 
   if (!toPublish) {
     return {
