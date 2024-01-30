@@ -46,12 +46,12 @@ const publishBlog = async (hashnode_key, article, host) => {
         coverImageOptions: {
             coverImageURL: "https://raw.githubusercontent.com/raunakgurud09/hashnode-publish/main/post/blog/assets/blog-post-3.jpg",
         },
-        disableComments: false,
-        settings: {
-            // slugOverridden: article.data.settings.slugOverridden,
-            enableTableOfContent: true,
-            isNewsletterActivated: false,
-        },
+        // disableComments: false,
+        // settings: {
+        //   // slugOverridden: article.data.settings.slugOverridden,
+        //   enableTableOfContent: true,
+        //   isNewsletterActivated: false,
+        // },
     };
     if (!toPublish) {
         return {
@@ -212,6 +212,26 @@ const searchPublication = ({ host }) => {
     };
 };
 exports.searchPublication = searchPublication;
+const foo = {
+    publicationId: "65b607b390d2cbd29afb4a47",
+    title: "Hope for og:image",
+    contentMarkdown: "random dummy text",
+    tags: [
+        {
+            slug: "webdev",
+            name: "webdev",
+        },
+    ],
+    coverImageOptions: {
+        coverImageURL: "https://raw.githubusercontent.com/raunakgurud09/hashnode-publish/main/post/blog/assets/cat.jpg",
+    },
+    disableComments: true,
+    subtitle: "The subtitle for the blog",
+    settings: {
+        isNewsletterActivated: true,
+        enableTableOfContent: true,
+    },
+};
 const PublishPost = (payload) => {
     return {
         operationName: "PublishPost",

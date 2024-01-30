@@ -35,12 +35,12 @@ export const publishBlog = async (
         "https://raw.githubusercontent.com/raunakgurud09/hashnode-publish/main/post/blog/assets/blog-post-3.jpg",
     },
 
-    disableComments: false,
-    settings: {
-      // slugOverridden: article.data.settings.slugOverridden,
-      enableTableOfContent: true,
-      isNewsletterActivated: false,
-    },
+    // disableComments: false,
+    // settings: {
+    //   // slugOverridden: article.data.settings.slugOverridden,
+    //   enableTableOfContent: true,
+    //   isNewsletterActivated: false,
+    // },
   };
 
   if (!toPublish) {

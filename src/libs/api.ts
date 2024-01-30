@@ -68,14 +68,35 @@ export type PublishPostProps = {
   };
 
   subtitle?: string;
-  slug?: string;
-  disableComments?: boolean;
-  isNewsletterActivated?: boolean;
+  // disableComments?: boolean;
+  // isNewsletterActivated?: boolean;
 
-  settings?: {
-    isNewsletterActivated?: boolean;
-    enableTableOfContent?: boolean;
-  };
+  // settings?: {
+  //   isNewsletterActivated?: boolean;
+  //   enableTableOfContent?: boolean;
+  // };
+};
+
+const foo = {
+  publicationId: "65b607b390d2cbd29afb4a47",
+  title: "Hope for og:image",
+  contentMarkdown: "random dummy text",
+  tags: [
+    {
+      slug: "webdev",
+      name: "webdev",
+    },
+  ],
+  coverImageOptions: {
+    coverImageURL:
+      "https://raw.githubusercontent.com/raunakgurud09/hashnode-publish/main/post/blog/assets/cat.jpg",
+  },
+  disableComments: true,
+  subtitle: "The subtitle for the blog",
+  settings: {
+    isNewsletterActivated: true,
+    enableTableOfContent: true,
+  },
 };
 
 export const PublishPost = (payload: PublishPostProps) => {
