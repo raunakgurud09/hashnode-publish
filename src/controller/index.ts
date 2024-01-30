@@ -146,8 +146,3 @@ export const getPublicationId = async (
     }
   }
 };
-
-(async () => {
-  const host = "raunakgurud.hashnode.dev";
-  console.log(await getPublicationId(host));
-})();
