@@ -14,6 +14,8 @@ export const publishBlog = async (
 ) => {
   const toPublish = article.data.publish ?? false;
 
+  console.log(article);
+
   if (toPublish == false) {
     return {
       message: `${article.data.title} is been worked on ⚒️`,

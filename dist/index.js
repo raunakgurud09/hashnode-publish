@@ -30,6 +30,7 @@ const constants_1 = __nccwpck_require__(5105);
 const publishBlog = async (hashnode_key, article, host) => {
     var _a;
     const toPublish = (_a = article.data.publish) !== null && _a !== void 0 ? _a : false;
+    console.log(article);
     if (toPublish == false) {
         return {
             message: `${article.data.title} is been worked on ⚒️`,
