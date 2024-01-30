@@ -1,4 +1,4 @@
-import path from "node:path";
+import path from "path";
 const hostUrl = "https://raw.githubusercontent.com";
 
 const relativeImageRegex =
@@ -21,9 +21,9 @@ export function updateRelativeImageUrls(
 ) {
   const data = { ...article.data };
   const { content } = article;
-  console.log("content", content);
+  const basePath = path.dirname(article.file);
+  console.log("basePath", basePath);
 
-  // const basePath = path.dirname(article.file);
   // let match;
   // while ((match = relativeImageRegex.exec(article.content))) {
   //   console.log("match", match);

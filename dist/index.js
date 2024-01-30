@@ -105,7 +105,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getImageUrls = exports.updateRelativeImageUrls = exports.convertPathToPosix = void 0;
-const node_path_1 = __importDefault(__nccwpck_require__(9411));
+const path_1 = __importDefault(__nccwpck_require__(1017));
 const hostUrl = "https://raw.githubusercontent.com";
 const relativeImageRegex = /!\[(.*)]\((?!.*?:\/\/)([^ ]*?) *?( (?:'.*'|".*"))? *?\)/g;
 const imageRegex = /!\[(.*)]\(([^ ]*?) *?( (?:'.*'|".*"))? *?\)/g;
@@ -113,12 +113,12 @@ const convertPathToPosix = (path) => path.replace(/\\/g, "/");
 exports.convertPathToPosix = convertPathToPosix;
 const isUrl = (string) => /^https?:\/\/\w/.test(string);
 const getResourceUrl = (repository, branch) => `${hostUrl}/${repository.user}/${repository.name}/${branch}/`;
-const getFullImagePath = (basePath, imagePath) => (0, exports.convertPathToPosix)(node_path_1.default.normalize(node_path_1.default.join(basePath, imagePath)));
+const getFullImagePath = (basePath, imagePath) => (0, exports.convertPathToPosix)(path_1.default.normalize(path_1.default.join(basePath, imagePath)));
 function updateRelativeImageUrls(article, repository, branch) {
     const data = { ...article.data };
     const { content } = article;
-    console.log("content", content);
-    // const basePath = path.dirname(article.file);
+    const basePath = path_1.default.dirname(article.file);
+    console.log("basePath", basePath);
     // let match;
     // while ((match = relativeImageRegex.exec(article.content))) {
     //   console.log("match", match);
@@ -52834,14 +52834,6 @@ module.exports = require("net");
 
 "use strict";
 module.exports = require("node:events");
-
-/***/ }),
-
-/***/ 9411:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("node:path");
 
 /***/ }),
 
