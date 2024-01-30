@@ -19,6 +19,9 @@ export const parseFile = async (file: string) => {
   // update the images relative path in file to github hosted image path
   const article = updateRelativeImageUrls(parsedArticle, repository, file);
 
+  article.data.coverImageOptions = {};
+  article.coverImageOptions.coverImageURL = article.data.cover_image;
+
   const newTags = createTags(article.data.tags);
   article.data.tags = newTags;
 

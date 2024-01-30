@@ -284,6 +284,8 @@ const parseFile = async (file) => {
     const repository = (0, repos_1.getRepoDetails)();
     // update the images relative path in file to github hosted image path
     const article = (0, image_1.updateRelativeImageUrls)(parsedArticle, repository, file);
+    article.data.coverImageOptions = {};
+    article.coverImageOptions.coverImageURL = article.data.cover_image;
     const newTags = (0, helper_1.createTags)(article.data.tags);
     article.data.tags = newTags;
     // const isSchedules = !!article.data.publishedAt ?? false;
@@ -371,8 +373,7 @@ function updateRelativeImageUrls(article, repository, file) {
     // TODO: test this working
     if (data.cover_image && !isUrl(data.cover_image)) {
         const fullPath = getFullImagePath(basePath, data.cover_image);
-        // coverImageOptions more details
-        data.coverImageOptions.coverImageURL = `${getResourceUrl(repository, repository.branch)}${fullPath}`;
+        data.cover_image = `${getResourceUrl(repository, repository.branch)}${fullPath}`;
     }
     return { ...article, content, data };
 }
