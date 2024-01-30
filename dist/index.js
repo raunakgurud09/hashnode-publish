@@ -280,7 +280,7 @@ const parseFile = async (file) => {
     const content = await fs_extra_1.default.readFile(file, "utf8");
     const article = (0, gray_matter_1.default)(content, { language: "yaml" });
     const newTags = (0, helper_1.createTags)(article.data.tags);
-    // time process 
+    // time process
     return { ...article, tags: newTags };
 };
 exports.parseFile = parseFile;
