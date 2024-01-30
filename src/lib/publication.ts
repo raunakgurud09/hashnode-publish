@@ -24,10 +24,9 @@ export const publishToHashnode = async ({
 
   // update the images relative path in file to github hosted image path
   const updatedArticle = updateRelativeImageUrls(article, repository, file);
-  console.log("updatedArticle", updatedArticle);
 
   const publish = await publishBlog(hashnode_key, updatedArticle, host);
-  console.log("publish", publish);
+  console.log("publish data", publish);
   // return result of publish blog
   return publish;
 };

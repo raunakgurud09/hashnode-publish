@@ -31,9 +31,9 @@ const publishBlog = async (hashnode_key, article, host) => {
     var _a;
     const toPublish = (_a = article.data.publish) !== null && _a !== void 0 ? _a : false;
     console.log(article);
-    if (toPublish == false) {
+    if (!toPublish) {
         return {
-            message: `${article.data.title} is been worked on ⚒️`,
+            message: `Title:${article.data.title} is been worked on ⚒️`,
         };
     }
     // get publicationId
@@ -259,9 +259,8 @@ const publishToHashnode = async ({ host, hashnode_key, file, }) => {
     const repository = (0, respo_1.getRepoDetails)();
     // update the images relative path in file to github hosted image path
     const updatedArticle = (0, image_1.updateRelativeImageUrls)(article, repository, file);
-    console.log("updatedArticle", updatedArticle);
     const publish = await (0, controller_1.publishBlog)(hashnode_key, updatedArticle, host);
-    console.log("publish", publish);
+    console.log("publish data", publish);
     // return result of publish blog
     return publish;
 };

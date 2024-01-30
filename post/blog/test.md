@@ -1,6 +1,6 @@
 ---
 title: test title
-publish: false
+publish: true
 description: A simple test article
 cover_image: ./assets/cat.jpg
 subtitle: "abc123"
