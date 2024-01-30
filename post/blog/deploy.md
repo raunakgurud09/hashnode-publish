@@ -10,13 +10,10 @@ tags:
   - next
   
 originalArticleURL: "https://tx.shadcn.com/blog/deploying-next-apps"
-
-
 subtitle: "deploy your Next.js apps on Vercel"
 
-isNewsletterActivated: false
+isNewsletterActivated: true
 enableTableOfContent: false
-
 ---
 
 
