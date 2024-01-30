@@ -1,39 +1,40 @@
 import axios from "axios";
+import {
+  MyPublications,
+  PublishPost,
+  PublishPostProps,
+  searchPublication,
+} from "../lib/api";
+import { HASHNODE_ENDPOINT, hashnode_key } from "../constants";
 
-const endPoint = "https://gql.hashnode.com/";
+export const publishBlog = async (
+  hashnode_key: string,
+  article: any,
+  host: string
+) => {
+  const toPublish = article.data.publish ?? false;
 
-export const publishBlog = async (hashnode_key: string, article: any) => {
-  // fetch from owner user 1st or option to publish on host address
-  const publicationId = "65b607b390d2cbd29afb4a47";
+  if (toPublish == false) {
+    return {
+      message: `${article.data.title} is been worked on ⚒️`,
+    };
+  }
 
-  const graphqlQuery = {
-    operationName: "PublishPost",
-    query: `mutation PublishPost($input: PublishPostInput!){
-      publishPost(input: $input) {
-        post {
-          id
-          slug
-          title
-          subtitle
-          author {
-            username
-          }
-        }
-      }
-    }`,
-    variables: {
-      input: {
-        title: `${article.data.title}`,
-        contentMarkdown: `${article.content}`,
-        publicationId,
-        tags: [
-          {
-            slug: "webdev",
-            name: "webdev",
-          },
-        ],
-      },
-    },
+  // get publicationId
+  const { publication, error } = await getPublicationId(host);
+  if (error || !publication) {
+    return { error };
+  }
+  // log to the publication title it's been posted on
+  console.log(`blog is been posted on ${publication.title}...`);
+
+  // parse tags from article
+
+  const payload: PublishPostProps = {
+    title: article.data.title,
+    markdown: article.content,
+    publicationId: publication.id,
+    tags: [{ name: "webdev" }],
   };
 
   const headers = {
@@ -43,9 +44,9 @@ export const publishBlog = async (hashnode_key: string, article: any) => {
 
   try {
     const { data } = await axios({
-      url: endPoint,
+      url: HASHNODE_ENDPOINT,
       method: "post",
-      data: graphqlQuery,
+      data: PublishPost(payload),
       headers: headers,
     });
 
@@ -55,3 +56,98 @@ export const publishBlog = async (hashnode_key: string, article: any) => {
     return {};
   }
 };
+
+export const getPublicationId = async (
+  host: string | undefined
+): Promise<{
+  publication: { id: string; title: string } | null;
+  error: { status_code: number | string; message: string } | null;
+}> => {
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `${hashnode_key}`,
+  };
+
+  if (host) {
+    console.log(`host provided: ${host}`);
+    // check permission to post
+    const payload = { host };
+    try {
+      const {
+        data: {
+          data: { publication },
+        },
+      } = await axios({
+        url: HASHNODE_ENDPOINT,
+        method: "post",
+        data: searchPublication(payload),
+        headers: headers,
+      });
+
+      if (publication) {
+        return {
+          publication,
+          error: null,
+        };
+      } else {
+        return {
+          publication: null,
+          error: {
+            status_code: 400,
+            message: "invalid host. Enter a valid host",
+          },
+        };
+      }
+    } catch (error) {
+      console.log("error");
+      return {
+        publication: null,
+        error: {
+          status_code: 500,
+          message: "Something went wrong",
+        },
+      };
+    }
+  } else {
+    console.log("host not provided");
+
+    try {
+      const {
+        data: {
+          data: {
+            me: { publications },
+          },
+        },
+      } = await axios({
+        url: HASHNODE_ENDPOINT,
+        method: "post",
+        data: MyPublications(),
+        headers: headers,
+      });
+
+      // fetch host address form 1sh owner blog
+      const { node } = publications.edges[0];
+
+      return {
+        publication: node,
+        error: null,
+      };
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      console.log("error", error?.message);
+      return {
+        publication: null,
+        error: {
+          status_code: 500,
+          message: "Something went wrong",
+        },
+      };
+    }
+  }
+};
+
+(async () => {
+  const host = "raunakgurud.hashnode.dev";
+  console.log(await getPublicationId(host));
+})();

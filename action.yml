@@ -8,9 +8,8 @@ runs:
   using: "node20"
   main: "dist/index.js"
 inputs:
-  title: # id of input
-    description: "Title of the new blog"
-    required: true
+  host:
+    description: "url of the blog you want to publish on"
   file:
     description: "Path to the files uploaded"
     default: "Posts/**/*.md"

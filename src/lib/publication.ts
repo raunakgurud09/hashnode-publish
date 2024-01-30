@@ -1,44 +1,36 @@
-import { Toolkit } from "actions-toolkit";
-import { queryMe } from "./query";
-import fs from "fs-extra";
-import matter from "gray-matter";
+
 import { updateRelativeImageUrls } from "../utils/image";
 import { publishBlog } from "../controller";
+import { parseFile } from "../utils/file";
+import { getRepoDetails } from "../utils/respo";
 
 type publishProps = {
-  title: string;
+  host: string;
   hashnode_key: string;
   file: string;
 };
 
 export const publishToHashnode = async ({
-  title,
+  host,
   hashnode_key,
   file,
 }: publishProps) => {
-  const response = await queryMe(hashnode_key);
-  if (!response) {
-    return [];
-  }
 
-  const tools = new Toolkit();
-  const { owner, repo } = tools.context.repo;
-  const branch = "main";
-  const repository = {
-    user: owner,
-    name: repo,
-    branch,
-  };
-  // console.log(tools.context.repo);
+  // check validity of hashnode_key
 
-  const content = await fs.readFile(file, "utf8");
-  const article = matter(content, { language: "yaml" });
+  // parse the file into content 
+  const article = parseFile(file)
+  
+  //  get information related to repository
+  const repository = getRepoDetails()
 
+  // update the images relative path in file to github hosted image path
   const updatedArticle = updateRelativeImageUrls(article, repository, file);
 
-  const publish = await publishBlog(hashnode_key, updatedArticle);
+  const publish = await publishBlog(hashnode_key, updatedArticle,host);
+  
   console.log("publish", publish);
 
-
-  return [response];
+  // return result of publish blog
+  return publish;
 };

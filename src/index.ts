@@ -5,12 +5,11 @@ import {
   setSecret,
   setOutput,
 } from "@actions/core";
-import { Toolkit } from "actions-toolkit";
 import { publishToHashnode } from "./lib/publication";
 
 export async function run() {
   try {
-    const title = getInput("title");
+    const host = getInput("host");
     const file = getInput("file");
     const hashnode_key = getInput("hashnode_key");
 
@@ -19,7 +18,7 @@ export async function run() {
     console.log("Welcome to this action");
     debug(
       JSON.stringify({
-        title,
+        host,
         file,
         hashnode_key,
       })
@@ -27,22 +26,18 @@ export async function run() {
 
     // some function to analyze the post
     // give output of the post
-    const results = await publishToHashnode({
-      title,
+    const result = await publishToHashnode({
+      host,
       hashnode_key,
       file,
     });
 
-    const output = results.map((r: any) => {
-      return r;
-    });
-
-    const json = JSON.stringify(output, null, 2);
+    const json = JSON.stringify(result, null, 2);
 
     debug("Output result_json:\n" + json);
     setOutput("result_json", json);
 
-    const summary = `output length: ${output.length}`;
+    const summary = `output success message or failure message`;
     setOutput("result_summary", summary);
 
     // const payload = JSON.stringify(github.context.payload, undefined, 2);

@@ -1,6 +1,19 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 5105:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.hashnode_key = exports.HASHNODE_ENDPOINT = void 0;
+exports.HASHNODE_ENDPOINT = "https://gql.hashnode.com/";
+exports.hashnode_key = "bcd8acf8-7450-4415-91db-6047d2e99da9";
+
+
+/***/ }),
+
 /***/ 9111:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -10,40 +23,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.publishBlog = void 0;
+exports.getPublicationId = exports.publishBlog = void 0;
 const axios_1 = __importDefault(__nccwpck_require__(8757));
-const endPoint = "https://gql.hashnode.com/";
-const publishBlog = async (hashnode_key, article) => {
-    // fetch from owner user 1st or option to publish on host address
-    const publicationId = "65b607b390d2cbd29afb4a47";
-    const graphqlQuery = {
-        operationName: "PublishPost",
-        query: `mutation PublishPost($input: PublishPostInput!){
-      publishPost(input: $input) {
-        post {
-          id
-          slug
-          title
-          subtitle
-          author {
-            username
-          }
-        }
-      }
-    }`,
-        variables: {
-            input: {
-                title: `${article.data.title}`,
-                contentMarkdown: `${article.content}`,
-                publicationId,
-                tags: [
-                    {
-                        slug: "webdev",
-                        name: "webdev",
-                    },
-                ],
-            },
-        },
+const api_1 = __nccwpck_require__(8409);
+const constants_1 = __nccwpck_require__(5105);
+const publishBlog = async (hashnode_key, article, host) => {
+    var _a;
+    const toPublish = (_a = article.data.publish) !== null && _a !== void 0 ? _a : false;
+    if (toPublish == false) {
+        return {
+            message: `${article.data.title} is been worked on ⚒️`,
+        };
+    }
+    // get publicationId
+    const { publication, error } = await (0, exports.getPublicationId)(host);
+    if (error || !publication) {
+        return { error };
+    }
+    // log to the publication title it's been posted on
+    console.log(`blog is been posted on ${publication.title}...`);
+    // parse tags from article
+    const payload = {
+        title: article.data.title,
+        markdown: article.content,
+        publicationId: publication.id,
+        tags: [{ name: "webdev" }],
     };
     const headers = {
         "Content-Type": "application/json",
@@ -51,9 +55,9 @@ const publishBlog = async (hashnode_key, article) => {
     };
     try {
         const { data } = await (0, axios_1.default)({
-            url: endPoint,
+            url: constants_1.HASHNODE_ENDPOINT,
             method: "post",
-            data: graphqlQuery,
+            data: (0, api_1.PublishPost)(payload),
             headers: headers,
         });
         return data;
@@ -64,67 +68,99 @@ const publishBlog = async (hashnode_key, article) => {
     }
 };
 exports.publishBlog = publishBlog;
-
-
-/***/ }),
-
-/***/ 3706:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.publishToHashnode = void 0;
-const actions_toolkit_1 = __nccwpck_require__(7045);
-const query_1 = __nccwpck_require__(2519);
-const fs_extra_1 = __importDefault(__nccwpck_require__(5630));
-const gray_matter_1 = __importDefault(__nccwpck_require__(5382));
-const image_1 = __nccwpck_require__(5817);
-const controller_1 = __nccwpck_require__(9111);
-const publishToHashnode = async ({ title, hashnode_key, file, }) => {
-    const response = await (0, query_1.queryMe)(hashnode_key);
-    if (!response) {
-        return [];
-    }
-    const tools = new actions_toolkit_1.Toolkit();
-    const { owner, repo } = tools.context.repo;
-    const branch = "main";
-    const repository = {
-        user: owner,
-        name: repo,
-        branch,
+const getPublicationId = async (host) => {
+    const headers = {
+        "Content-Type": "application/json",
+        Authorization: `${constants_1.hashnode_key}`,
     };
-    // console.log(tools.context.repo);
-    const content = await fs_extra_1.default.readFile(file, "utf8");
-    const article = (0, gray_matter_1.default)(content, { language: "yaml" });
-    const updatedArticle = (0, image_1.updateRelativeImageUrls)(article, repository, file);
-    const publish = await (0, controller_1.publishBlog)(hashnode_key, updatedArticle);
-    console.log("publish", publish);
-    return [response];
+    if (host) {
+        console.log(`host provided: ${host}`);
+        // check permission to post
+        const payload = { host };
+        try {
+            const { data: { data: { publication }, }, } = await (0, axios_1.default)({
+                url: constants_1.HASHNODE_ENDPOINT,
+                method: "post",
+                data: (0, api_1.searchPublication)(payload),
+                headers: headers,
+            });
+            if (publication) {
+                return {
+                    publication,
+                    error: null,
+                };
+            }
+            else {
+                return {
+                    publication: null,
+                    error: {
+                        status_code: 400,
+                        message: "invalid host. Enter a valid host",
+                    },
+                };
+            }
+        }
+        catch (error) {
+            console.log("error");
+            return {
+                publication: null,
+                error: {
+                    status_code: 500,
+                    message: "Something went wrong",
+                },
+            };
+        }
+    }
+    else {
+        console.log("host not provided");
+        try {
+            const { data: { data: { me: { publications }, }, }, } = await (0, axios_1.default)({
+                url: constants_1.HASHNODE_ENDPOINT,
+                method: "post",
+                data: (0, api_1.MyPublications)(),
+                headers: headers,
+            });
+            // fetch host address form 1sh owner blog
+            const { node } = publications.edges[0];
+            return {
+                publication: node,
+                error: null,
+            };
+        }
+        catch (error) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            console.log("error", error === null || error === void 0 ? void 0 : error.message);
+            return {
+                publication: null,
+                error: {
+                    status_code: 500,
+                    message: "Something went wrong",
+                },
+            };
+        }
+    }
 };
-exports.publishToHashnode = publishToHashnode;
+exports.getPublicationId = getPublicationId;
+(async () => {
+    const host = "raunakgurud.hashnode.dev";
+    console.log(await (0, exports.getPublicationId)(host));
+})();
 
 
 /***/ }),
 
-/***/ 2519:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+/***/ 8409:
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.queryMe = void 0;
-const axios_1 = __importDefault(__nccwpck_require__(8757));
-const HASHNODE_API = "https://gql.hashnode.com/";
-const graphqlQuery = {
-    operationName: "Me",
-    query: `query Me {
+exports.PublishPost = exports.searchPublication = exports.MyPublications = exports.Me = void 0;
+const Me = () => {
+    return {
+        operationName: "Me",
+        query: `query Me {
     me {
       id
       username
@@ -132,33 +168,129 @@ const graphqlQuery = {
     }
   }
   `,
-    variables: {},
-};
-const queryMe = async (hashnodeKey) => {
-    const token = hashnodeKey;
-    if (!token) {
-        console.log("token not found");
-        return;
-    }
-    const headers = {
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
+        variables: {},
     };
-    try {
-        const { data: { data }, } = await (0, axios_1.default)({
-            url: HASHNODE_API,
-            method: "post",
-            data: graphqlQuery,
-            headers: headers,
-        });
-        // console.log(data);
-        return data;
-    }
-    catch (error) {
-        console.log(error);
-    }
 };
-exports.queryMe = queryMe;
+exports.Me = Me;
+const MyPublications = () => {
+    return {
+        operationName: "MyPublications",
+        query: `query MyPublications {
+      me {
+        publications(first:10,filter:{roles:OWNER}) {
+          edges {
+            node {
+              id
+              title
+            }
+          }
+        } 
+      }
+    }`,
+        variables: {},
+    };
+};
+exports.MyPublications = MyPublications;
+const searchPublication = ({ host }) => {
+    return {
+        operationName: "findPublication",
+        query: `query findPublication($host: String!) {
+      publication(host:$host){
+        id
+        title
+      }
+    }
+  `,
+        variables: {
+            host: host,
+        },
+    };
+};
+exports.searchPublication = searchPublication;
+const PublishPost = ({ title, markdown, publicationId, tags, publish_on, }) => {
+    console.log(tags, publicationId);
+    return {
+        operationName: "PublishPost",
+        query: `mutation PublishPost($input: PublishPostInput!){
+    publishPost(input: $input) {
+      post {
+        id
+        slug
+        title
+        subtitle
+        author {
+          username
+        }
+      }
+    }
+  }`,
+        variables: {
+            input: {
+                title,
+                contentMarkdown: markdown,
+                publicationId,
+                tags: [
+                    {
+                        name: "webdev",
+                    },
+                ],
+            },
+        },
+    };
+};
+exports.PublishPost = PublishPost;
+
+
+/***/ }),
+
+/***/ 3706:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.publishToHashnode = void 0;
+const image_1 = __nccwpck_require__(5817);
+const controller_1 = __nccwpck_require__(9111);
+const file_1 = __nccwpck_require__(4670);
+const respo_1 = __nccwpck_require__(5983);
+const publishToHashnode = async ({ host, hashnode_key, file, }) => {
+    // check validity of hashnode_key
+    // parse the file into content 
+    const article = (0, file_1.parseFile)(file);
+    //  get information related to repository
+    const repository = (0, respo_1.getRepoDetails)();
+    // update the images relative path in file to github hosted image path
+    const updatedArticle = (0, image_1.updateRelativeImageUrls)(article, repository, file);
+    const publish = await (0, controller_1.publishBlog)(hashnode_key, updatedArticle, host);
+    console.log("publish", publish);
+    // return result of publish blog
+    return publish;
+};
+exports.publishToHashnode = publishToHashnode;
+
+
+/***/ }),
+
+/***/ 4670:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.parseFile = void 0;
+const fs_extra_1 = __importDefault(__nccwpck_require__(5630));
+const gray_matter_1 = __importDefault(__nccwpck_require__(5382));
+const parseFile = async (file) => {
+    // path of file you want to parse
+    const content = await fs_extra_1.default.readFile(file, "utf8");
+    const article = (0, gray_matter_1.default)(content, { language: "yaml" });
+    return article;
+};
+exports.parseFile = parseFile;
 
 
 /***/ }),
@@ -195,9 +327,10 @@ function updateRelativeImageUrls(article, repository, file) {
             content = content.replace(link, newLink);
         }
     }
+    // TODO: test this working
     // if (data.cover_image && !isUrl(data.cover_image)) {
     //   const fullPath = getFullImagePath(basePath, data.cover_image);
-    //   data.cover_image = `${getResourceUrl(repository, branch)}${fullPath}`;
+    //   data.cover_image = `${getResourceUrl(repository, repository.branch)}${fullPath}`;
     // }
     return { ...article, content, data };
 }
@@ -217,6 +350,33 @@ function getImageUrls(article) {
     return urls;
 }
 exports.getImageUrls = getImageUrls;
+
+
+/***/ }),
+
+/***/ 5983:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getRepoDetails = void 0;
+const actions_toolkit_1 = __nccwpck_require__(7045);
+const getRepoDetails = () => {
+    const tools = new actions_toolkit_1.Toolkit();
+    const { owner, repo } = tools.context.repo;
+    // TODO: find the working branch
+    const branch = "main";
+    return {
+        // git repository username
+        user: owner,
+        // current repository name
+        name: repo,
+        // current branch name
+        branch,
+    };
+};
+exports.getRepoDetails = getRepoDetails;
 
 
 /***/ }),
@@ -7448,7 +7608,7 @@ function descending(a, b)
 /***/ 3682:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-var register = __nccwpck_require__(4670);
+var register = __nccwpck_require__(6190);
 var addHook = __nccwpck_require__(5549);
 var removeHook = __nccwpck_require__(6819);
 
@@ -7566,7 +7726,7 @@ function addHook(state, kind, name, hook) {
 
 /***/ }),
 
-/***/ 4670:
+/***/ 6190:
 /***/ ((module) => {
 
 module.exports = register;
@@ -59123,30 +59283,27 @@ const core_1 = __nccwpck_require__(2186);
 const publication_1 = __nccwpck_require__(3706);
 async function run() {
     try {
-        const title = (0, core_1.getInput)("title");
+        const host = (0, core_1.getInput)("host");
         const file = (0, core_1.getInput)("file");
         const hashnode_key = (0, core_1.getInput)("hashnode_key");
         (0, core_1.setSecret)(hashnode_key);
         console.log("Welcome to this action");
         (0, core_1.debug)(JSON.stringify({
-            title,
+            host,
             file,
             hashnode_key,
         }));
         // some function to analyze the post
         // give output of the post
-        const results = await (0, publication_1.publishToHashnode)({
-            title,
+        const result = await (0, publication_1.publishToHashnode)({
+            host,
             hashnode_key,
             file,
         });
-        const output = results.map((r) => {
-            return r;
-        });
-        const json = JSON.stringify(output, null, 2);
+        const json = JSON.stringify(result, null, 2);
         (0, core_1.debug)("Output result_json:\n" + json);
         (0, core_1.setOutput)("result_json", json);
-        const summary = `output length: ${output.length}`;
+        const summary = `output success message or failure message`;
         (0, core_1.setOutput)("result_summary", summary);
         // const payload = JSON.stringify(github.context.payload, undefined, 2);
         // Get the JSON webhook payload for the event that triggered the workflow
