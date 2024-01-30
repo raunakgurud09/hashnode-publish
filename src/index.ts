@@ -5,6 +5,7 @@ import {
   setSecret,
   setOutput,
 } from "@actions/core";
+import { Toolkit } from "actions-toolkit";
 import { publishToHashnode } from "./lib/publication";
 
 export async function run() {
@@ -31,6 +32,10 @@ export async function run() {
       hashnode_key,
       file,
     });
+
+    const tools = new Toolkit();
+
+    console.log(tools.context.repo);
 
     const output = results.map((r: any) => {
       return r;
