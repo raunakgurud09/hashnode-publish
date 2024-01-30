@@ -38,7 +38,7 @@ const publishBlog = async (hashnode_key, article, host) => {
     // log to the publication title it's been posted on
     console.log(`blog is been posted on ${publication.title}...`);
     const payload = {
-        markdown: article.content,
+        contentMarkdown: article.content,
         title: article.data.title,
         publicationId: publication.id,
         tags: article.data.tags,

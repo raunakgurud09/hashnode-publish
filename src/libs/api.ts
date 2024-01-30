@@ -59,7 +59,7 @@ export type Ttag = {
 
 export type PublishPostProps = {
   title: string;
-  markdown: string;
+  contentMarkdown: string;
   publicationId: string;
   tags: Ttag[];
 

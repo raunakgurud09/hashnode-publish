@@ -24,7 +24,7 @@ export const publishBlog = async (
   console.log(`blog is been posted on ${publication.title}...`);
 
   const payload: PublishPostProps = {
-    markdown: article.content,
+    contentMarkdown: article.content,
     title: article.data.title,
     publicationId: publication.id,
     tags: article.data.tags,
