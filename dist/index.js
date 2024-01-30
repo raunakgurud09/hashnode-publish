@@ -253,12 +253,15 @@ const file_1 = __nccwpck_require__(4670);
 const respo_1 = __nccwpck_require__(5983);
 const publishToHashnode = async ({ host, hashnode_key, file, }) => {
     // check validity of hashnode_key
-    // parse the file into content 
+    // parse the file into content
     const article = (0, file_1.parseFile)(file);
+    console.log(article);
     //  get information related to repository
     const repository = (0, respo_1.getRepoDetails)();
+    console.log("repository", repository);
     // update the images relative path in file to github hosted image path
     const updatedArticle = (0, image_1.updateRelativeImageUrls)(article, repository, file);
+    console.log("updatedArticle", updatedArticle);
     const publish = await (0, controller_1.publishBlog)(hashnode_key, updatedArticle, host);
     console.log("publish", publish);
     // return result of publish blog

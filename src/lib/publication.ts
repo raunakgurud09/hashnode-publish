@@ -1,4 +1,3 @@
-
 import { updateRelativeImageUrls } from "../utils/image";
 import { publishBlog } from "../controller";
 import { parseFile } from "../utils/file";
@@ -15,22 +14,22 @@ export const publishToHashnode = async ({
   hashnode_key,
   file,
 }: publishProps) => {
-
   // check validity of hashnode_key
 
-  // parse the file into content 
-  const article = parseFile(file)
-  
+  // parse the file into content
+  const article = parseFile(file);
+  console.log(article);
+
   //  get information related to repository
-  const repository = getRepoDetails()
+  const repository = getRepoDetails();
+  console.log("repository", repository);
 
   // update the images relative path in file to github hosted image path
   const updatedArticle = updateRelativeImageUrls(article, repository, file);
+  console.log("updatedArticle", updatedArticle);
 
-  const publish = await publishBlog(hashnode_key, updatedArticle,host);
-  
+  const publish = await publishBlog(hashnode_key, updatedArticle, host);
   console.log("publish", publish);
-
   // return result of publish blog
   return publish;
 };
