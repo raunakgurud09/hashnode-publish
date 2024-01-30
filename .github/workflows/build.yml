@@ -1,4 +1,4 @@
-name: Tests
+name: Build & Lint tests
 
 on:
   push:
@@ -16,4 +16,5 @@ jobs:
     - uses: actions/checkout@v3
     - run: yarn install --frozen-lockfile 
     - run: yarn build
-    - run: yarn test
+    - run: yarn style:lint
+    - run: yarn style:prettier

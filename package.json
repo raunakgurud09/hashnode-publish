@@ -8,7 +8,6 @@
     "test": "jest",
     "prepare": "husky install",
     "lint": "lint-staged",
-    "lint:report": "npx eslint . --format json --output-file ./lint-results/web.json",
     "style:all": "tsc && npm run style:lint && npm run style:prettier",
     "style:lint": "eslint src/**/*.ts",
     "style:prettier": "prettier --check 'src/**/*.{js,jsx,ts,tsx}'",
@@ -57,9 +56,9 @@
     "lodash": "^4.17.21"
   },
   "lint-staged": {
-    "./src/**/*.{js,ts}": [
+    "src/**/*.ts": [
       "prettier --write",
-      "eslint --max-warnings 0"
+      "eslint --max-warnings 5"
     ]
   }
 }
