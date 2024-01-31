@@ -169,7 +169,7 @@ exports.getPublicationId = getPublicationId;
 const getUser = async () => {
     var _a, _b;
     try {
-        const { data } = await axios_2.api.post("/", { data: (0, api_1.Me)() });
+        const { data } = await axios_2.api.post("/", { ...(0, api_1.Me)() });
         return {
             data: data.data,
             error: data.error,
@@ -300,7 +300,7 @@ exports.api = void 0;
 const axios_1 = __importDefault(__nccwpck_require__(8757));
 const constants_1 = __nccwpck_require__(5105);
 const api = axios_1.default.create({
-    url: constants_1.HASHNODE_ENDPOINT,
+    baseURL: constants_1.HASHNODE_ENDPOINT,
     headers: { Authorization: `${process.env.HASHNODE_KEY}` },
 });
 exports.api = api;

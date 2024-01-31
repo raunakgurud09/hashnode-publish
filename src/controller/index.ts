@@ -185,7 +185,7 @@ export const getPublicationId = async (
 
 export const getUser = async (): Promise<any> => {
   try {
-    const { data } = await api.post("/", { data: Me() });
+    const { data } = await api.post("/", { ...Me() });
 
     return {
       data: data.data,
