@@ -59377,6 +59377,7 @@ const core_1 = __nccwpck_require__(2186);
 const publication_1 = __nccwpck_require__(5243);
 const controller_1 = __nccwpck_require__(9111);
 async function run() {
+    var _a;
     try {
         const host = (0, core_1.getInput)("host");
         const file = (0, core_1.getInput)("file");
@@ -59391,7 +59392,7 @@ async function run() {
             (0, core_1.info)(summary);
             (0, core_1.setFailed)(response.errors);
         }
-        (0, core_1.info)(`Welcome ${response.me.name} to this action`);
+        (0, core_1.info)(`Welcome ${(_a = response === null || response === void 0 ? void 0 : response.me) === null || _a === void 0 ? void 0 : _a.name} to this action`);
         (0, core_1.debug)(JSON.stringify({
             host,
             file,

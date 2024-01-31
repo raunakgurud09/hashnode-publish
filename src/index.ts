@@ -29,7 +29,7 @@ export async function run() {
       setFailed(response.errors);
     }
 
-    info(`Welcome ${response.me.name} to this action`);
+    info(`Welcome ${response?.me?.name} to this action`);
     debug(
       JSON.stringify({
         host,
