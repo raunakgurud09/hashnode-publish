@@ -27,7 +27,7 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
 const api_1 = __nccwpck_require__(2895);
 const constants_1 = __nccwpck_require__(5105);
 const publishBlog = async (hashnode_key, article, host) => {
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e, _f, _g;
     const toPublish = (_a = article.data.publish) !== null && _a !== void 0 ? _a : false;
     // get publicationId
     const { publication, error } = await (0, exports.getPublicationId)(host);
@@ -73,10 +73,10 @@ const publishBlog = async (hashnode_key, article, host) => {
         return {
             data: data.data,
             error: {
-                status_code: 400,
+                status_code: (_c = (_b = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _b === void 0 ? void 0 : _b.extensions.code) !== null && _c !== void 0 ? _c : null,
                 // message: JSON.stringify(data),
-                message: data.errors[0].message,
-                info: data.errors[0].extensions,
+                message: ((_d = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _d === void 0 ? void 0 : _d.message) || null,
+                info: ((_e = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _e === void 0 ? void 0 : _e.extensions) || null,
             },
         };
     }
@@ -87,10 +87,10 @@ const publishBlog = async (hashnode_key, article, host) => {
             error: {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                status_code: (_b = error === null || error === void 0 ? void 0 : error.errors[0].extensions) === null || _b === void 0 ? void 0 : _b.code,
+                status_code: (_f = error === null || error === void 0 ? void 0 : error.errors[0].extensions) === null || _f === void 0 ? void 0 : _f.code,
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                message: JSON.stringify((_c = error === null || error === void 0 ? void 0 : error.errors[0]) === null || _c === void 0 ? void 0 : _c.message),
+                message: JSON.stringify((_g = error === null || error === void 0 ? void 0 : error.errors[0]) === null || _g === void 0 ? void 0 : _g.message),
             },
         };
     }

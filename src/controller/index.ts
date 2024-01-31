@@ -74,10 +74,10 @@ export const publishBlog = async (
     return {
       data: data.data,
       error: {
-        status_code: 400,
+        status_code: data?.errors[0]?.extensions.code ?? null,
         // message: JSON.stringify(data),
-        message: data.errors[0].message,
-        info: data.errors[0].extensions,
+        message: data?.errors[0]?.message || null,
+        info: data?.errors[0]?.extensions || null,
       },
     };
   } catch (error) {
