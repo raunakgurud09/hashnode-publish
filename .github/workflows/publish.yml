@@ -16,7 +16,7 @@ jobs:
         id: publish_hashnode
         uses: ./
         with:
-          host: "wemakedevs.hashnode.dev"
+          host: "levelupdevs.hashnode.dev"
           file: "post/blog/dynamic-routing-static-regeneration.md"
           hashnode_key: ${{secrets.HASHNODE_KEY}}
       - name: Get get output
