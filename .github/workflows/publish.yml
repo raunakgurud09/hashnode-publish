@@ -1,6 +1,7 @@
 name: "Publish"
 
-on: 
+on:
+  workflow_dispatch:
   push:
     branches: ["main"]
   pull_request:
@@ -15,7 +16,7 @@ jobs:
         id: publish_hashnode
         uses: ./
         with:
-          host: "levelupdevs.hashnode.dev"
+          host: "wemakedevs.hashnode.dev"
           file: "post/blog/dynamic-routing-static-regeneration.md"
           hashnode_key: ${{secrets.HASHNODE_KEY}}
       - name: Get get output
