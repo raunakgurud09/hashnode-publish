@@ -250,12 +250,11 @@ const publishToHashnode = async ({ host, hashnode_key, file, }) => {
     // check validity of hashnode_key
     // parse the file into content
     const article = await (0, file_1.parseFile)(file);
-    // console.log("article", article.data);
-    // validation
-    const publish = await (0, controller_1.publishBlog)(hashnode_key, article, host);
-    // console.log("publish data", publish);
+    // TODO: validation
+    const publish_response = await (0, controller_1.publishBlog)(hashnode_key, article, host);
+    console.log("publish data", publish_response);
     // return result of publish blog
-    return publish;
+    return publish_response;
 };
 exports.publishToHashnode = publishToHashnode;
 

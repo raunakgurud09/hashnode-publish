@@ -1,4 +1,4 @@
-function getISTinUTCFormat(time: string) {
+export function getISTinUTCFormat(time: string) {
   // Get the current date and time in UTC
   const currentUTC = new Date();
   const ISTTimeInput = new Date(time);

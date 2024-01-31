@@ -12,7 +12,7 @@ export const publishBlog = async (
   hashnode_key: string,
   article: any,
   host: string
-) => {
+): Promise<any> => {
   const toPublish = article.data.publish ?? false;
 
   // get publicationId

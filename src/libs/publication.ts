@@ -17,11 +17,11 @@ export const publishToHashnode = async ({
   // parse the file into content
   const article = await parseFile(file);
 
-  // console.log("article", article.data);
-  // validation
+  // TODO: validation
+  const publish_response = await publishBlog(hashnode_key, article, host);
 
-  const publish = await publishBlog(hashnode_key, article, host);
-  // console.log("publish data", publish);
+  console.log("publish data", publish_response);
+
   // return result of publish blog
-  return publish;
+  return publish_response;
 };
