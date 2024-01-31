@@ -20,4 +20,4 @@ jobs:
           file: "post/blog/dynamic-routing-static-regeneration.md"
           hashnode_key: ${{secrets.HASHNODE_KEY}}
       - name: Get get output
-        run: echo "me- ${{steps.publish_hashnode.outputs.result_json}} length ${{steps.publish_hashnode.outputs.result_summary}}"
+        run: echo "${{steps.publish_hashnode.outputs.result_json}} length ${{steps.publish_hashnode.outputs.result_summary}}"

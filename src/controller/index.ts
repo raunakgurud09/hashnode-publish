@@ -60,9 +60,7 @@ export const publishBlog = async (
   };
 
   try {
-    const {
-      data: { data, error },
-    } = await axios({
+    const { data } = await axios({
       url: HASHNODE_ENDPOINT,
       method: "post",
       data: PublishPost(payload),
@@ -71,7 +69,10 @@ export const publishBlog = async (
 
     return {
       data: data,
-      error: error,
+      error: {
+        status_code: 400,
+        message: JSON.stringify(data),
+      },
     };
   } catch (error) {
     console.log(error);
