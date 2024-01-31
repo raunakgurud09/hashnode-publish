@@ -27,7 +27,7 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
 const api_1 = __nccwpck_require__(2895);
 const constants_1 = __nccwpck_require__(5105);
 const publishBlog = async (hashnode_key, article, host) => {
-    var _a, _b;
+    var _a, _b, _c;
     const toPublish = (_a = article.data.publish) !== null && _a !== void 0 ? _a : false;
     // get publicationId
     const { publication, error } = await (0, exports.getPublicationId)(host);
@@ -40,7 +40,7 @@ const publishBlog = async (hashnode_key, article, host) => {
         return {
             data: {
                 status_code: 200,
-                message: `Title:${article.data.title} is been worked on ⚒️`,
+                message: `Title:${article.data.title} is been worked on ⚒️, Change to publish:true to publish`,
             },
             error: null,
         };
@@ -64,15 +64,15 @@ const publishBlog = async (hashnode_key, article, host) => {
         Authorization: `${hashnode_key}`,
     };
     try {
-        const { data } = await (0, axios_1.default)({
+        const { data: { data, error }, } = await (0, axios_1.default)({
             url: constants_1.HASHNODE_ENDPOINT,
             method: "post",
             data: (0, api_1.PublishPost)(payload),
             headers: headers,
         });
         return {
-            data: { data },
-            error: null,
+            data: data,
+            error: error,
         };
     }
     catch (error) {
@@ -80,10 +80,12 @@ const publishBlog = async (hashnode_key, article, host) => {
         return {
             data: null,
             error: {
-                status_code: 500,
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                message: JSON.stringify((_b = error === null || error === void 0 ? void 0 : error.errors) === null || _b === void 0 ? void 0 : _b.message),
+                status_code: (_b = error === null || error === void 0 ? void 0 : error.errors[0].extensions) === null || _b === void 0 ? void 0 : _b.code,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                message: JSON.stringify((_c = error === null || error === void 0 ? void 0 : error.errors[0]) === null || _c === void 0 ? void 0 : _c.message),
             },
         };
     }
@@ -273,10 +275,14 @@ const publishToHashnode = async ({ host, hashnode_key, file, }) => {
     // parse the file into content
     const article = await (0, file_1.parseFile)(file);
     // TODO: validation
-    const publish_response = await (0, controller_1.publishBlog)(hashnode_key, article, host);
-    console.log("publish data", publish_response);
+    const { data, error } = await (0, controller_1.publishBlog)(hashnode_key, article, host);
+    if (error) {
+        console.log(error);
+        process.exit(1);
+    }
+    console.log("res", data);
     // return result of publish blog
-    return publish_response;
+    return data;
 };
 exports.publishToHashnode = publishToHashnode;
 
