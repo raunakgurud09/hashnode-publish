@@ -16,15 +16,17 @@ export async function run() {
 
     setSecret(hashnode_key);
 
-    const user = await getUser(hashnode_key);
-    console.log(user);
+    const response = await getUser(hashnode_key);
 
-    // eslint-disable-next-line no-constant-condition
-    if (true) {
+    if (response.error) {
+      setOutput("result_json", response.data);
+      const summary = `Invalid hashnode_key ${hashnode_key}`;
+      setOutput("result_summary", summary);
+      setOutput("result_info", response.error);
       process.exit(1);
     }
 
-    console.log("Welcome to this action");
+    console.log(`Welcome ${response.me.name} to this action`);
     debug(
       JSON.stringify({
         host,

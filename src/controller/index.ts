@@ -197,23 +197,14 @@ export const getUser = async (hashnode_key: string): Promise<any> => {
       headers: headers,
     });
 
-    console.log("getUser", data);
-
-    return {
-      data: data,
-      error: data.error,
-    };
+    return data;
   } catch (error) {
     console.log(error);
     return {
       data: null,
       error: {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        status_code: error?.errors[0].extensions?.code,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        message: JSON.stringify(error?.errors[0]?.message),
+        status_code: 500,
+        message: "something went wrong",
       },
     };
   }

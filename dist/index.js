@@ -166,7 +166,6 @@ const getPublicationId = async (host) => {
 };
 exports.getPublicationId = getPublicationId;
 const getUser = async (hashnode_key) => {
-    var _a, _b;
     try {
         const headers = {
             "Content-Type": "application/json",
@@ -178,23 +177,15 @@ const getUser = async (hashnode_key) => {
             data: (0, api_1.Me)(),
             headers: headers,
         });
-        console.log("getUser", data);
-        return {
-            data: data,
-            error: data.error,
-        };
+        return data;
     }
     catch (error) {
         console.log(error);
         return {
             data: null,
             error: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                status_code: (_a = error === null || error === void 0 ? void 0 : error.errors[0].extensions) === null || _a === void 0 ? void 0 : _a.code,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                message: JSON.stringify((_b = error === null || error === void 0 ? void 0 : error.errors[0]) === null || _b === void 0 ? void 0 : _b.message),
+                status_code: 500,
+                message: "something went wrong",
             },
         };
     }
@@ -59391,13 +59382,15 @@ async function run() {
         const file = (0, core_1.getInput)("file");
         const hashnode_key = (0, core_1.getInput)("hashnode_key");
         (0, core_1.setSecret)(hashnode_key);
-        const user = await (0, controller_1.getUser)(hashnode_key);
-        console.log(user);
-        // eslint-disable-next-line no-constant-condition
-        if (true) {
+        const response = await (0, controller_1.getUser)(hashnode_key);
+        if (response.error) {
+            (0, core_1.setOutput)("result_json", response.data);
+            const summary = `Invalid hashnode_key ${hashnode_key}`;
+            (0, core_1.setOutput)("result_summary", summary);
+            (0, core_1.setOutput)("result_info", response.error);
             process.exit(1);
         }
-        console.log("Welcome to this action");
+        console.log(`Welcome ${response.me.name} to this action`);
         (0, core_1.debug)(JSON.stringify({
             host,
             file,
