@@ -22,10 +22,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getPublicationId = exports.publishBlog = void 0;
+exports.getUser = exports.getPublicationId = exports.publishBlog = void 0;
 const axios_1 = __importDefault(__nccwpck_require__(8757));
 const api_1 = __nccwpck_require__(2895);
 const constants_1 = __nccwpck_require__(5105);
+const axios_2 = __nccwpck_require__(1530);
 const publishBlog = async (hashnode_key, article, host) => {
     var _a, _b, _c;
     const toPublish = (_a = article.data.publish) !== null && _a !== void 0 ? _a : false;
@@ -165,6 +166,31 @@ const getPublicationId = async (host) => {
     }
 };
 exports.getPublicationId = getPublicationId;
+const getUser = async () => {
+    var _a, _b;
+    try {
+        const { data } = await axios_2.api.post("/", { data: (0, api_1.Me)() });
+        return {
+            data: data.data,
+            error: data.error,
+        };
+    }
+    catch (error) {
+        console.log(error);
+        return {
+            data: null,
+            error: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                status_code: (_a = error === null || error === void 0 ? void 0 : error.errors[0].extensions) === null || _a === void 0 ? void 0 : _a.code,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                message: JSON.stringify((_b = error === null || error === void 0 ? void 0 : error.errors[0]) === null || _b === void 0 ? void 0 : _b.message),
+            },
+        };
+    }
+};
+exports.getUser = getUser;
 
 
 /***/ }),
@@ -257,6 +283,27 @@ const PublishPost = (payload) => {
     };
 };
 exports.PublishPost = PublishPost;
+
+
+/***/ }),
+
+/***/ 1530:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.api = void 0;
+const axios_1 = __importDefault(__nccwpck_require__(8757));
+const constants_1 = __nccwpck_require__(5105);
+const api = axios_1.default.create({
+    url: constants_1.HASHNODE_ENDPOINT,
+    headers: { Authorization: `${process.env.HASHNODE_KEY}` },
+});
+exports.api = api;
 
 
 /***/ }),
@@ -59349,12 +59396,19 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const core_1 = __nccwpck_require__(2186);
 const publication_1 = __nccwpck_require__(5243);
+const controller_1 = __nccwpck_require__(9111);
 async function run() {
     try {
         const host = (0, core_1.getInput)("host");
         const file = (0, core_1.getInput)("file");
         const hashnode_key = (0, core_1.getInput)("hashnode_key");
         (0, core_1.setSecret)(hashnode_key);
+        const user = await (0, controller_1.getUser)();
+        console.log(user);
+        // eslint-disable-next-line no-constant-condition
+        if (true) {
+            process.exit(1);
+        }
         console.log("Welcome to this action");
         (0, core_1.debug)(JSON.stringify({
             host,

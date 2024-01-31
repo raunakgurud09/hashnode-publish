@@ -1,11 +1,13 @@
 import axios from "axios";
 import {
+  Me,
   MyPublications,
   PublishPost,
   PublishPostProps,
   searchPublication,
 } from "../libs/api";
 import { HASHNODE_ENDPOINT } from "../constants";
+import { api } from "../libs/axios";
 
 export const publishBlog = async (
   hashnode_key: string,
@@ -178,5 +180,29 @@ export const getPublicationId = async (
         },
       };
     }
+  }
+};
+
+export const getUser = async (): Promise<any> => {
+  try {
+    const { data } = await api.post("/", { data: Me() });
+
+    return {
+      data: data.data,
+      error: data.error,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      data: null,
+      error: {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        status_code: error?.errors[0].extensions?.code,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        message: JSON.stringify(error?.errors[0]?.message),
+      },
+    };
   }
 };

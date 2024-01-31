@@ -6,6 +6,7 @@ import {
   setOutput,
 } from "@actions/core";
 import { publishToHashnode } from "./libs/publication";
+import { getUser } from "./controller";
 
 export async function run() {
   try {
@@ -14,6 +15,14 @@ export async function run() {
     const hashnode_key = getInput("hashnode_key");
 
     setSecret(hashnode_key);
+
+    const user = await getUser();
+    console.log(user);
+
+    // eslint-disable-next-line no-constant-condition
+    if (true) {
+      process.exit(1);
+    }
 
     console.log("Welcome to this action");
     debug(
