@@ -20,11 +20,11 @@ export async function run() {
 
     console.log(response);
 
-    if (response.error) {
+    if (response.errors) {
       setOutput("result_json", response.data);
-      const summary = `Invalid hashnode_key ${hashnode_key}`;
+      const summary = `Invalid hashnode_key ${response?.errors[0].message}`;
       setOutput("result_summary", summary);
-      setOutput("result_info", response.error);
+      setOutput("result_info", response.errors);
 
       process.exit(1);
     }

@@ -59384,11 +59384,11 @@ async function run() {
         (0, core_1.setSecret)(hashnode_key);
         const response = await (0, controller_1.getUser)(hashnode_key);
         console.log(response);
-        if (response.error) {
+        if (response.errors) {
             (0, core_1.setOutput)("result_json", response.data);
-            const summary = `Invalid hashnode_key ${hashnode_key}`;
+            const summary = `Invalid hashnode_key ${response === null || response === void 0 ? void 0 : response.errors[0].message}`;
             (0, core_1.setOutput)("result_summary", summary);
-            (0, core_1.setOutput)("result_info", response.error);
+            (0, core_1.setOutput)("result_info", response.errors);
             process.exit(1);
         }
         console.log(`Welcome ${response.me.name} to this action`);
