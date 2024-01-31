@@ -18,11 +18,14 @@ export async function run() {
 
     const response = await getUser(hashnode_key);
 
+    console.log(response);
+
     if (response.error) {
       setOutput("result_json", response.data);
       const summary = `Invalid hashnode_key ${hashnode_key}`;
       setOutput("result_summary", summary);
       setOutput("result_info", response.error);
+
       process.exit(1);
     }
 

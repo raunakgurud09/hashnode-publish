@@ -59383,6 +59383,7 @@ async function run() {
         const hashnode_key = (0, core_1.getInput)("hashnode_key");
         (0, core_1.setSecret)(hashnode_key);
         const response = await (0, controller_1.getUser)(hashnode_key);
+        console.log(response);
         if (response.error) {
             (0, core_1.setOutput)("result_json", response.data);
             const summary = `Invalid hashnode_key ${hashnode_key}`;
