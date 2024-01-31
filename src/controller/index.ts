@@ -30,7 +30,7 @@ export const publishBlog = async (
     return {
       data: {
         status_code: 200,
-        message: `Title:${article.data.title} is been worked on ⚒️`,
+        message: `Title:${article.data.title} is been worked on ⚒️, Change to publish:true to publish`,
       },
       error: null,
     };
@@ -60,7 +60,9 @@ export const publishBlog = async (
   };
 
   try {
-    const { data } = await axios({
+    const {
+      data: { data, error },
+    } = await axios({
       url: HASHNODE_ENDPOINT,
       method: "post",
       data: PublishPost(payload),
@@ -68,18 +70,20 @@ export const publishBlog = async (
     });
 
     return {
-      data: { data },
-      error: null,
+      data: data,
+      error: error,
     };
   } catch (error) {
     console.log(error);
     return {
       data: null,
       error: {
-        status_code: 500,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        message: JSON.stringify(error?.errors?.message),
+        status_code: error?.errors[0].extensions?.code,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        message: JSON.stringify(error?.errors[0]?.message),
       },
     };
   }

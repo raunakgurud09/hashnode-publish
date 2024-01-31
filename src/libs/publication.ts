@@ -18,10 +18,15 @@ export const publishToHashnode = async ({
   const article = await parseFile(file);
 
   // TODO: validation
-  const publish_response = await publishBlog(hashnode_key, article, host);
+  const { data, error } = await publishBlog(hashnode_key, article, host);
 
-  console.log("publish data", publish_response);
+  if (error) {
+    console.log(error);
+    process.exit(1);
+  }
+
+  console.log("res", data);
 
   // return result of publish blog
-  return publish_response;
+  return data;
 };
