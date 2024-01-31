@@ -206,3 +206,7 @@ export const getUser = async (): Promise<any> => {
     };
   }
 };
+
+(async () => {
+  console.log(await getUser());
+})();

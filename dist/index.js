@@ -8,7 +8,7 @@
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.HASHNODE_ENDPOINT = void 0;
-exports.HASHNODE_ENDPOINT = "https://gql.hashnode.com/";
+exports.HASHNODE_ENDPOINT = "https://gql.hashnode.com";
 
 
 /***/ }),
@@ -191,6 +191,9 @@ const getUser = async () => {
     }
 };
 exports.getUser = getUser;
+(async () => {
+    console.log(await (0, exports.getUser)());
+})();
 
 
 /***/ }),
@@ -301,7 +304,10 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
 const constants_1 = __nccwpck_require__(5105);
 const api = axios_1.default.create({
     baseURL: constants_1.HASHNODE_ENDPOINT,
-    headers: { Authorization: `${process.env.HASHNODE_KEY}` },
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `${process.env.HASHNODE_KEY}`,
+    },
 });
 exports.api = api;
 

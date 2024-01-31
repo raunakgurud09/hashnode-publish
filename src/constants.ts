@@ -1,1 +1,1 @@
-export const HASHNODE_ENDPOINT = "https://gql.hashnode.com/";
+export const HASHNODE_ENDPOINT = "https://gql.hashnode.com";
