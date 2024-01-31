@@ -27,15 +27,24 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
 const api_1 = __nccwpck_require__(2895);
 const constants_1 = __nccwpck_require__(5105);
 const publishBlog = async (hashnode_key, article, host) => {
-    var _a;
+    var _a, _b;
     const toPublish = (_a = article.data.publish) !== null && _a !== void 0 ? _a : false;
     // get publicationId
     const { publication, error } = await (0, exports.getPublicationId)(host);
     if (error || !publication) {
-        return { error };
+        return { data: null, error };
     }
     // log to the publication title it's been posted on
     console.log(`blog is been posted on ${publication.title}...`);
+    if (!toPublish) {
+        return {
+            data: {
+                status_code: 200,
+                message: `Title:${article.data.title} is been worked on ⚒️`,
+            },
+            error: null,
+        };
+    }
     const payload = {
         contentMarkdown: article.content,
         title: article.data.title,
@@ -43,18 +52,13 @@ const publishBlog = async (hashnode_key, article, host) => {
         tags: article.data.tags,
         subtitle: article.data.subtitle,
         coverImageOptions: {
-            coverImageURL: article.data.cover_image,
+            coverImageURL: article.data.cover_image || "",
         },
         settings: {
-            enableTableOfContent: article.data.settings.enableTableOfContent,
-            isNewsletterActivated: article.data.settings.isNewsletterActivated,
+            enableTableOfContent: article.data.settings.enableTableOfContent || true,
+            isNewsletterActivated: article.data.settings.isNewsletterActivated || true,
         },
     };
-    if (!toPublish) {
-        return {
-            message: `Title:${article.data.title} is been worked on ⚒️`,
-        };
-    }
     const headers = {
         "Content-Type": "application/json",
         Authorization: `${hashnode_key}`,
@@ -66,11 +70,22 @@ const publishBlog = async (hashnode_key, article, host) => {
             data: (0, api_1.PublishPost)(payload),
             headers: headers,
         });
-        return data;
+        return {
+            data: { data },
+            error: null,
+        };
     }
     catch (error) {
         console.log(error);
-        return {};
+        return {
+            data: null,
+            error: {
+                status_code: 500,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                message: JSON.stringify((_b = error === null || error === void 0 ? void 0 : error.errors) === null || _b === void 0 ? void 0 : _b.message),
+            },
+        };
     }
 };
 exports.publishBlog = publishBlog;
@@ -157,6 +172,9 @@ exports.getPublicationId = getPublicationId;
 
 "use strict";
 
+// ******************************************************************************************* //
+// *******************                      QUERY                     ************************ //
+// ******************************************************************************************* //
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PublishPost = exports.searchPublication = exports.MyPublications = exports.Me = void 0;
 const Me = () => {
@@ -218,7 +236,11 @@ const PublishPost = (payload) => {
         id
         slug
         title
-        subtitle
+        url
+        readTimeInMinutes
+        tags {
+          name
+        }
         author {
           username
         }

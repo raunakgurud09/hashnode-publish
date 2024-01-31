@@ -1,5 +1,4 @@
 import axios from "axios";
-import lodash from "lodash";
 import {
   MyPublications,
   PublishPost,
@@ -12,16 +11,30 @@ export const publishBlog = async (
   hashnode_key: string,
   article: any,
   host: string
-): Promise<any> => {
+): Promise<{
+  data: any | null;
+  error: { status_code: number | string; message: string } | null;
+}> => {
   const toPublish = article.data.publish ?? false;
 
   // get publicationId
   const { publication, error } = await getPublicationId(host);
   if (error || !publication) {
-    return { error };
+    return { data: null, error };
   }
+
   // log to the publication title it's been posted on
   console.log(`blog is been posted on ${publication.title}...`);
+
+  if (!toPublish) {
+    return {
+      data: {
+        status_code: 200,
+        message: `Title:${article.data.title} is been worked on ⚒️`,
+      },
+      error: null,
+    };
+  }
 
   const payload: PublishPostProps = {
     contentMarkdown: article.content,
@@ -31,20 +44,15 @@ export const publishBlog = async (
     subtitle: article.data.subtitle,
 
     coverImageOptions: {
-      coverImageURL: article.data.cover_image,
+      coverImageURL: article.data.cover_image || "",
     },
 
     settings: {
-      enableTableOfContent: article.data.settings.enableTableOfContent,
-      isNewsletterActivated: article.data.settings.isNewsletterActivated,
+      enableTableOfContent: article.data.settings.enableTableOfContent || true,
+      isNewsletterActivated:
+        article.data.settings.isNewsletterActivated || true,
     },
   };
-
-  if (!toPublish) {
-    return {
-      message: `Title:${article.data.title} is been worked on ⚒️`,
-    };
-  }
 
   const headers = {
     "Content-Type": "application/json",
@@ -59,10 +67,21 @@ export const publishBlog = async (
       headers: headers,
     });
 
-    return data;
+    return {
+      data: { data },
+      error: null,
+    };
   } catch (error) {
     console.log(error);
-    return {};
+    return {
+      data: null,
+      error: {
+        status_code: 500,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        message: JSON.stringify(error?.errors?.message),
+      },
+    };
   }
 };
 

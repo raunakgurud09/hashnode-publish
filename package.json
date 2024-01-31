@@ -32,7 +32,6 @@
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.11",
-    "@types/lodash": "^4.14.202",
     "@types/node": "^20.11.9",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
@@ -52,8 +51,7 @@
     "actions-toolkit": "^6.0.1",
     "axios": "^1.6.7",
     "fs-extra": "^11.2.0",
-    "gray-matter": "^4.0.3",
-    "lodash": "^4.17.21"
+    "gray-matter": "^4.0.3"
   },
   "lint-staged": {
     "src/**/*.ts": [

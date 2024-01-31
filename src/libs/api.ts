@@ -1,3 +1,7 @@
+// ******************************************************************************************* //
+// *******************                      QUERY                     ************************ //
+// ******************************************************************************************* //
+
 export const Me = () => {
   return {
     operationName: "Me",
@@ -84,7 +88,11 @@ export const PublishPost = (payload: PublishPostProps) => {
         id
         slug
         title
-        subtitle
+        url
+        readTimeInMinutes
+        tags {
+          name
+        }
         author {
           username
         }
