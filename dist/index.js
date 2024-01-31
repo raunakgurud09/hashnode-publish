@@ -59386,12 +59386,13 @@ async function run() {
         console.log(response);
         if (response.errors) {
             (0, core_1.setOutput)("result_json", response.data);
-            const summary = `Invalid hashnode_key ${response === null || response === void 0 ? void 0 : response.errors[0].message}`;
+            const summary = `Invalid hashnode_key: error - ${response === null || response === void 0 ? void 0 : response.errors[0].message}`;
             (0, core_1.setOutput)("result_summary", summary);
             (0, core_1.setOutput)("result_info", response.errors);
-            process.exit(1);
+            (0, core_1.info)(summary);
+            (0, core_1.setFailed)(response.errors);
         }
-        console.log(`Welcome ${response.me.name} to this action`);
+        (0, core_1.info)(`Welcome ${response.me.name} to this action`);
         (0, core_1.debug)(JSON.stringify({
             host,
             file,

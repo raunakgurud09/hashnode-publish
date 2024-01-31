@@ -4,6 +4,7 @@ import {
   debug,
   setSecret,
   setOutput,
+  info,
 } from "@actions/core";
 import { publishToHashnode } from "./libs/publication";
 import { getUser } from "./controller";
@@ -22,14 +23,15 @@ export async function run() {
 
     if (response.errors) {
       setOutput("result_json", response.data);
-      const summary = `Invalid hashnode_key ${response?.errors[0].message}`;
+      const summary = `Invalid hashnode_key: error - ${response?.errors[0].message}`;
       setOutput("result_summary", summary);
       setOutput("result_info", response.errors);
 
-      process.exit(1);
+      info(summary);
+      setFailed(response.errors);
     }
 
-    console.log(`Welcome ${response.me.name} to this action`);
+    info(`Welcome ${response.me.name} to this action`);
     debug(
       JSON.stringify({
         host,
