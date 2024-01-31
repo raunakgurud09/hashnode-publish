@@ -171,7 +171,7 @@ const getUser = async () => {
     try {
         const { data } = await axios_2.api.post("/", { ...(0, api_1.Me)() });
         return {
-            data: data.data,
+            data: data,
             error: data.error,
         };
     }
