@@ -30,9 +30,7 @@ export async function run() {
       setFailed(response.errors);
     }
 
-    console.log(response);
-
-    info(`Welcome ${response?.me?.name} to this action`);
+    info(`Welcome ${response?.data?.me?.name} to this action`);
     debug(
       JSON.stringify({
         host,

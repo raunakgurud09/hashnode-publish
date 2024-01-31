@@ -298,13 +298,17 @@ const controller_1 = __nccwpck_require__(9111);
 const file_1 = __nccwpck_require__(4670);
 const publishToHashnode = async ({ host, hashnode_key, file, }) => {
     // check validity of hashnode_key
+    var _a, _b;
     // parse the file into content
     const article = await (0, file_1.parseFile)(file);
     // TODO: validation
-    const res = await (0, controller_1.publishBlog)(hashnode_key, article, host);
-    console.log("res", res);
-    // return result of publish blog
-    return res;
+    const { data, error } = await (0, controller_1.publishBlog)(hashnode_key, article, host);
+    if (error) {
+        console.log(`error - ${error}`);
+        return error;
+    }
+    console.log(`blog successfully posted on ${(_b = (_a = data === null || data === void 0 ? void 0 : data.publishPost) === null || _a === void 0 ? void 0 : _a.post) === null || _b === void 0 ? void 0 : _b.url}`);
+    return data;
 };
 exports.publishToHashnode = publishToHashnode;
 
@@ -59377,7 +59381,7 @@ const core_1 = __nccwpck_require__(2186);
 const publication_1 = __nccwpck_require__(5243);
 const controller_1 = __nccwpck_require__(9111);
 async function run() {
-    var _a;
+    var _a, _b;
     try {
         const host = (0, core_1.getInput)("host");
         const file = (0, core_1.getInput)("file");
@@ -59392,8 +59396,7 @@ async function run() {
             (0, core_1.info)(summary);
             (0, core_1.setFailed)(response.errors);
         }
-        console.log(response);
-        (0, core_1.info)(`Welcome ${(_a = response === null || response === void 0 ? void 0 : response.me) === null || _a === void 0 ? void 0 : _a.name} to this action`);
+        (0, core_1.info)(`Welcome ${(_b = (_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.me) === null || _b === void 0 ? void 0 : _b.name} to this action`);
         (0, core_1.debug)(JSON.stringify({
             host,
             file,
