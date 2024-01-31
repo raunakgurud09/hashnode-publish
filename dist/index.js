@@ -64,7 +64,7 @@ const publishBlog = async (hashnode_key, article, host) => {
         Authorization: `${hashnode_key}`,
     };
     try {
-        const { data: { data, error }, } = await (0, axios_1.default)({
+        const { data } = await (0, axios_1.default)({
             url: constants_1.HASHNODE_ENDPOINT,
             method: "post",
             data: (0, api_1.PublishPost)(payload),
@@ -72,7 +72,10 @@ const publishBlog = async (hashnode_key, article, host) => {
         });
         return {
             data: data,
-            error: error,
+            error: {
+                status_code: 400,
+                message: JSON.stringify(data),
+            },
         };
     }
     catch (error) {
@@ -275,14 +278,10 @@ const publishToHashnode = async ({ host, hashnode_key, file, }) => {
     // parse the file into content
     const article = await (0, file_1.parseFile)(file);
     // TODO: validation
-    const { data, error } = await (0, controller_1.publishBlog)(hashnode_key, article, host);
-    if (error) {
-        console.log(error);
-        process.exit(1);
-    }
-    console.log("res", data);
+    const res = await (0, controller_1.publishBlog)(hashnode_key, article, host);
+    console.log("res", res);
     // return result of publish blog
-    return data;
+    return res;
 };
 exports.publishToHashnode = publishToHashnode;
 
