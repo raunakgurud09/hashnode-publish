@@ -170,6 +170,7 @@ const getUser = async () => {
     var _a, _b;
     try {
         const { data } = await axios_2.api.post("/", { ...(0, api_1.Me)() });
+        console.log("getUser", data);
         return {
             data: data,
             error: data.error,
@@ -191,9 +192,6 @@ const getUser = async () => {
     }
 };
 exports.getUser = getUser;
-(async () => {
-    console.log(await (0, exports.getUser)());
-})();
 
 
 /***/ }),

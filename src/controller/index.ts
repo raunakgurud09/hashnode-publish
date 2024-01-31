@@ -187,6 +187,7 @@ export const getUser = async (): Promise<any> => {
   try {
     const { data } = await api.post("/", { ...Me() });
 
+    console.log("getUser", data);
     return {
       data: data,
       error: data.error,
@@ -206,7 +207,3 @@ export const getUser = async (): Promise<any> => {
     };
   }
 };
-
-(async () => {
-  console.log(await getUser());
-})();
