@@ -68,6 +68,13 @@ originalArticleURL: "https://example.com/blog/example-title-blog"
 
 # Optional? - Subtitle for the blog
 subtitle: A simple test article.
+
+
+# Optional? - Default value is true
+enableTableOfContent: true
+
+# Optional? - Default value is true
+isNewsletterActivated: true
 ---
 ```
 ```md
