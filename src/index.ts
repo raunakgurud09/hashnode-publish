@@ -19,8 +19,6 @@ export async function run() {
 
     const response = await getUser(hashnode_key);
 
-    console.log(response);
-
     if (response.errors) {
       setOutput("result_json", response.data);
       const summary = `Invalid hashnode_key: error - ${response?.errors[0].message}`;
