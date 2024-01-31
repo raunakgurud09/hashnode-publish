@@ -13,7 +13,11 @@ export const publishBlog = async (
   host: string
 ): Promise<{
   data: any | null;
-  error: { status_code: number | string; message: string } | null;
+  error: {
+    status_code: number | string;
+    message: string;
+    info?: string | undefined;
+  } | null;
 }> => {
   const toPublish = article.data.publish ?? false;
 
@@ -68,10 +72,12 @@ export const publishBlog = async (
     });
 
     return {
-      data: data,
+      data: data.data,
       error: {
         status_code: 400,
-        message: JSON.stringify(data),
+        // message: JSON.stringify(data),
+        message: data.errors[0].message,
+        info: data.errors[0].extensions,
       },
     };
   } catch (error) {

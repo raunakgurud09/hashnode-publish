@@ -71,10 +71,12 @@ const publishBlog = async (hashnode_key, article, host) => {
             headers: headers,
         });
         return {
-            data: data,
+            data: data.data,
             error: {
                 status_code: 400,
-                message: JSON.stringify(data),
+                // message: JSON.stringify(data),
+                message: data.errors[0].message,
+                info: data.errors[0].extensions,
             },
         };
     }
