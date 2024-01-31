@@ -26,8 +26,11 @@ export async function run() {
       setOutput("result_info", response.errors);
 
       info(summary);
+
       setFailed(response.errors);
     }
+
+    console.log(response);
 
     info(`Welcome ${response?.me?.name} to this action`);
     debug(

@@ -59392,6 +59392,7 @@ async function run() {
             (0, core_1.info)(summary);
             (0, core_1.setFailed)(response.errors);
         }
+        console.log(response);
         (0, core_1.info)(`Welcome ${(_a = response === null || response === void 0 ? void 0 : response.me) === null || _a === void 0 ? void 0 : _a.name} to this action`);
         (0, core_1.debug)(JSON.stringify({
             host,
