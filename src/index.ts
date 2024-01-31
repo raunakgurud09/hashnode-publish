@@ -16,7 +16,7 @@ export async function run() {
 
     setSecret(hashnode_key);
 
-    const user = await getUser();
+    const user = await getUser(hashnode_key);
     console.log(user);
 
     // eslint-disable-next-line no-constant-condition

@@ -26,7 +26,6 @@ exports.getUser = exports.getPublicationId = exports.publishBlog = void 0;
 const axios_1 = __importDefault(__nccwpck_require__(8757));
 const api_1 = __nccwpck_require__(2895);
 const constants_1 = __nccwpck_require__(5105);
-const axios_2 = __nccwpck_require__(1530);
 const publishBlog = async (hashnode_key, article, host) => {
     var _a, _b, _c;
     const toPublish = (_a = article.data.publish) !== null && _a !== void 0 ? _a : false;
@@ -166,10 +165,19 @@ const getPublicationId = async (host) => {
     }
 };
 exports.getPublicationId = getPublicationId;
-const getUser = async () => {
+const getUser = async (hashnode_key) => {
     var _a, _b;
     try {
-        const { data } = await axios_2.api.post("/", { ...(0, api_1.Me)() });
+        const headers = {
+            "Content-Type": "application/json",
+            Authorization: `${hashnode_key}`,
+        };
+        const { data } = await (0, axios_1.default)({
+            url: constants_1.HASHNODE_ENDPOINT,
+            method: "post",
+            data: (0, api_1.Me)(),
+            headers: headers,
+        });
         console.log("getUser", data);
         return {
             data: data,
@@ -284,30 +292,6 @@ const PublishPost = (payload) => {
     };
 };
 exports.PublishPost = PublishPost;
-
-
-/***/ }),
-
-/***/ 1530:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.api = void 0;
-const axios_1 = __importDefault(__nccwpck_require__(8757));
-const constants_1 = __nccwpck_require__(5105);
-const api = axios_1.default.create({
-    baseURL: constants_1.HASHNODE_ENDPOINT,
-    headers: {
-        "Content-Type": "application/json",
-        Authorization: `${process.env.HASHNODE_KEY}`,
-    },
-});
-exports.api = api;
 
 
 /***/ }),
@@ -59407,7 +59391,7 @@ async function run() {
         const file = (0, core_1.getInput)("file");
         const hashnode_key = (0, core_1.getInput)("hashnode_key");
         (0, core_1.setSecret)(hashnode_key);
-        const user = await (0, controller_1.getUser)();
+        const user = await (0, controller_1.getUser)(hashnode_key);
         console.log(user);
         // eslint-disable-next-line no-constant-condition
         if (true) {

@@ -183,11 +183,22 @@ export const getPublicationId = async (
   }
 };
 
-export const getUser = async (): Promise<any> => {
+export const getUser = async (hashnode_key: string): Promise<any> => {
   try {
-    const { data } = await api.post("/", { ...Me() });
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `${hashnode_key}`,
+    };
+
+    const { data } = await axios({
+      url: HASHNODE_ENDPOINT,
+      method: "post",
+      data: Me(),
+      headers: headers,
+    });
 
     console.log("getUser", data);
+
     return {
       data: data,
       error: data.error,
